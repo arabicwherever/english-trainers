@@ -234,6 +234,31 @@
     box-shadow: 0 6px 20px rgba(14, 94, 92, 0.4);
   }
   .start-btn:hover { transform: translateY(-2px); }
+  .name-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 340px;
+    margin: 0 auto 18px;
+  }
+  .name-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #D8DDDD;
+    border-radius: 12px;
+    font-size: 16px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: center;
+  }
+  .name-input:focus { border-color: var(--gold); }
+  .name-error {
+    color: var(--red);
+    font-size: 14px;
+    margin-bottom: 14px;
+    direction: rtl;
+  }
   .certificate {
     background: white;
     padding: 40px;
@@ -294,6 +319,13 @@
         Get <strong>15 correct</strong> to win.<br>
         You start with <strong>10 health</strong> and <strong>5 minutes</strong>.
       </p>
+      <div class="name-fields">
+        <input id="student-name" class="name-input" type="text"
+               placeholder="اكتب اسمك / Your name" autocomplete="name" maxlength="40" />
+        <input id="student-code" class="name-input" type="text"
+               placeholder="كود الطالب (اختياري) / Student code" maxlength="20" />
+      </div>
+      <div id="name-error" class="name-error hidden">من فضلك اكتب اسمك أولاً</div>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
     </div>
 
@@ -367,6 +399,13 @@ let timeLeft = TIME_LIMIT;
 let gameOver = false;
 let timerInterval = null;
 
+// ── Tracking state (sent to the admin dashboard) ───────────────────────
+let studentName = "";
+let studentCode = "";
+let wrongChoices = 0;
+let answersLog = [];      // every tap: { chosen, correct, isCorrect, ms }
+let roundStartTime = 0;   // when the current round's audio finished playing
+
 // ── Speech Synthesis (no MP3 needed) ───────────────────────────────────
 function speak(text) {
   if (!window.speechSynthesis) {
@@ -389,12 +428,31 @@ function speak(text) {
 
 // ── Game Flow ─────────────────────────────────────────────────────────
 function startGame() {
+  // Require a student name before starting
+  const nameEl = document.getElementById("student-name");
+  const codeEl = document.getElementById("student-code");
+  studentName = (nameEl.value || "").trim();
+  studentCode = (codeEl.value || "").trim();
+  if (!studentName) {
+    document.getElementById("name-error").classList.remove("hidden");
+    nameEl.focus();
+    return;
+  }
+
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("game-screen").classList.remove("hidden");
   health = START_HEALTH;
   correctChoices = 0;
+  wrongChoices = 0;
+  answersLog = [];
   timeLeft = TIME_LIMIT;
   gameOver = false;
+
+  // Open a live session in the admin dashboard
+  if (window.Tracker) {
+    window.Tracker.startSession({ name: studentName, code: studentCode, word: FOCUSED.word });
+  }
+
   updateUI();
   startTimer();
   // Pre-load voices
@@ -452,6 +510,7 @@ function nextRound() {
   const shuffledBackups = shuffleArray([...BACKUP_WORDS]).slice(0, CELLS_COUNT - 1);
   const round = shuffleArray([FOCUSED.word, ...shuffledBackups]);
   renderCells(round);
+  roundStartTime = Date.now();
   setTimeout(() => speak(FOCUSED.word), 350);
 }
 
@@ -471,10 +530,17 @@ function handleClick(cell, word) {
   if (gameOver) return;
   // disable all cells briefly
   document.querySelectorAll(".letter-cell").forEach(c => c.classList.add("disabled"));
+
+  // Record this answer (chosen word, whether correct, response time)
+  const isCorrect = word === FOCUSED.word;
+  const ms = roundStartTime ? Date.now() - roundStartTime : 0;
+  answersLog.push({ chosen: word, correct: FOCUSED.word, isCorrect, ms });
+
   if (word === FOCUSED.word) {
     cell.classList.add("correct");
     correctChoices++;
     updateUI();
+    if (window.Tracker) window.Tracker.update(buildProgress("playing"));
     if (correctChoices >= WIN_TARGET) {
       setTimeout(() => endGame("win"), 500);
     } else {
@@ -483,7 +549,9 @@ function handleClick(cell, word) {
   } else {
     cell.classList.add("wrong");
     health--;
+    wrongChoices++;
     updateUI();
+    if (window.Tracker) window.Tracker.update(buildProgress("playing"));
     if (health <= 0) {
       setTimeout(() => endGame("lose"), 500);
     } else {
@@ -499,11 +567,31 @@ function playSound() {
   speak(FOCUSED.word);
 }
 
+// Snapshot of the player's progress, sent to the admin dashboard
+function buildProgress(status) {
+  return {
+    status,                                   // "playing" | "won" | "lost"
+    correct: correctChoices,
+    wrong: wrongChoices,
+    target: WIN_TARGET,
+    scorePct: Math.round((correctChoices / WIN_TARGET) * 100),
+    healthLeft: health,
+    timeLeftSec: timeLeft,
+    answers: answersLog,
+  };
+}
+
 function endGame(result) {
   gameOver = true;
   clearInterval(timerInterval);
   document.getElementById("game-screen").classList.add("hidden");
   document.getElementById("end-screen").classList.remove("hidden");
+
+  // Final report to the admin dashboard
+  if (window.Tracker) {
+    window.Tracker.endSession(buildProgress(result === "win" ? "won" : "lost"));
+  }
+
   const titleEl = document.getElementById("end-title");
   const scoreEl = document.getElementById("final-score");
   const pct = Math.round((correctChoices / WIN_TARGET) * 100);
@@ -540,6 +628,67 @@ function playWinChime() {
 
 // Preload voices on load
 window.speechSynthesis && window.speechSynthesis.getVoices();
+</script>
+
+<!-- ── Firebase tracker: sends results to the admin dashboard ──────────── -->
+<script type="module">
+import { getDb } from "./firebase-config.js";
+import {
+  collection, doc, setDoc, updateDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+let sessionRef = null;
+let startMs = 0;
+let chain = Promise.resolve();   // serialise writes so they apply in order
+
+function queue(fn) {
+  chain = chain.then(fn).catch(err => console.warn("[Tracker]", err));
+  return chain;
+}
+
+window.Tracker = {
+  startSession({ name, code, word }) {
+    startMs = Date.now();
+    queue(async () => {
+      const db = await getDb();
+      if (!db) {
+        console.info("[Tracker] Offline mode — fill in firebase-config.js to send results to the admin.");
+        return;
+      }
+      sessionRef = doc(collection(db, "sessions"));   // auto-generated id
+      await setDoc(sessionRef, {
+        studentName: name,
+        studentCode: code || "",
+        word,
+        status: "playing",
+        correct: 0, wrong: 0, scorePct: 0,
+        answers: [],
+        startedAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    });
+  },
+
+  update(progress) {
+    queue(async () => {
+      if (!sessionRef) return;
+      await updateDoc(sessionRef, { ...progress, updatedAt: serverTimestamp() });
+    });
+  },
+
+  endSession(progress) {
+    const durationSec = startMs ? Math.round((Date.now() - startMs) / 1000) : 0;
+    queue(async () => {
+      if (!sessionRef) return;
+      await updateDoc(sessionRef, {
+        ...progress,
+        durationSec,
+        finishedAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    });
+  },
+};
 </script>
 </body>
 </html>
