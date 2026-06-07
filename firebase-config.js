@@ -25,7 +25,7 @@ export const firebaseConfig = {
 
 // Password required to open the admin dashboard.
 // ▶ Change this to your own secret before publishing.
-export const ADMIN_PASSWORD = "admin123";
+export const ADMIN_PASSWORD = "@Malek38721451";
 
 // ── Internal helpers ─────────────────────────────────────────────────────
 export const isConfigured =
