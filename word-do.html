@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Trainer — "do" | Eaalim Style</title>
+<style>
+  :root {
+    --teal: #0E5E5C;
+    --teal-deep: #083C3B;
+    --gold: #D4AF37;
+    --cream: #FAF7F2;
+    --ink: #1A2E2D;
+    --grey: #6E8282;
+    --red: #C0392B;
+    --green: #27AE60;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+    min-height: 100vh;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .game-container {
+    background: var(--cream);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 40px;
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+  }
+  .header {
+    border-bottom: 3px solid var(--gold);
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+  }
+  h1 {
+    color: var(--teal);
+    font-size: 32px;
+    font-weight: 900;
+  }
+  .subtitle {
+    color: var(--grey);
+    font-size: 14px;
+    margin-top: 5px;
+    letter-spacing: 1px;
+  }
+  .stats-bar {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--teal);
+    margin-top: 4px;
+  }
+  #timer.warning { color: var(--red); }
+  .health-bar-container {
+    background: #E8E8E8;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 25px;
+  }
+  .health-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #7DCEA0);
+    transition: width 0.3s, background 0.3s;
+    width: 100%;
+  }
+  .translation-area {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--gold);
+  }
+  .translation-label {
+    color: var(--grey);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .translation-text {
+    font-size: 30px;
+    color: var(--teal-deep);
+    font-weight: 700;
+    direction: rtl;
+    font-family: 'Amiri', 'Geeza Pro', serif;
+  }
+  .play-button {
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 14px 40px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  }
+  .play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.5);
+  }
+  .play-button::before { content: "🔊  "; }
+  .letters-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .letter-cell {
+    background: white;
+    padding: 30px 15px;
+    border-radius: 15px;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border: 3px solid transparent;
+    user-select: none;
+  }
+  .letter-cell:hover:not(.disabled) {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  }
+  .letter-cell.correct {
+    background: var(--green);
+    color: white;
+    animation: pulse-correct 0.5s;
+  }
+  .letter-cell.wrong {
+    background: var(--red);
+    color: white;
+    animation: shake 0.4s;
+  }
+  .letter-cell.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  @keyframes pulse-correct {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .skip-button {
+    background: transparent;
+    color: var(--grey);
+    border: 2px solid var(--grey);
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .skip-button:hover {
+    background: var(--grey);
+    color: white;
+  }
+  .start-screen, .end-screen {
+    text-align: center;
+    padding: 30px 0;
+  }
+  .start-screen h2, .end-screen h2 {
+    color: var(--teal);
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+  .start-screen p {
+    color: var(--grey);
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+  .target-word {
+    background: var(--teal);
+    color: var(--gold);
+    display: inline-block;
+    padding: 20px 50px;
+    border-radius: 15px;
+    font-size: 48px;
+    font-weight: 900;
+    margin: 20px 0;
+    letter-spacing: 3px;
+  }
+  .start-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s;
+    box-shadow: 0 6px 20px rgba(14, 94, 92, 0.4);
+  }
+  .start-btn:hover { transform: translateY(-2px); }
+  .certificate {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    border: 5px double var(--gold);
+    margin-top: 20px;
+  }
+  .certificate .ar {
+    font-size: 30px;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 10px;
+    direction: rtl;
+    font-family: 'Amiri', 'Geeza Pro', serif;
+  }
+  .certificate .en {
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .score-display {
+    font-size: 50px;
+    color: var(--teal-deep);
+    font-weight: 900;
+    margin: 15px 0;
+  }
+  .hidden { display: none !important; }
+  .footer {
+    margin-top: 30px;
+    color: var(--grey);
+    font-size: 12px;
+    border-top: 1px solid #E0E0E0;
+    padding-top: 15px;
+  }
+  @media (max-width: 500px) {
+    .game-container { padding: 20px; }
+    h1 { font-size: 22px; }
+    .target-word { font-size: 36px; padding: 15px 30px; }
+    .stats-bar { padding: 12px; }
+    .stat-value { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="header">
+      <h1>Word Trainer</h1>
+      <div class="subtitle">EAALIM-STYLE LEARNING GAME</div>
+    </div>
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="start-screen">
+      <h2>Learn the word</h2>
+      <div class="target-word">do</div>
+      <p>
+        Listen to the word, then tap the matching cell.<br>
+        Get <strong>15 correct</strong> to win.<br>
+        You start with <strong>10 health</strong> and <strong>5 minutes</strong>.
+      </p>
+      <button class="start-btn" onclick="startGame()">▶ Start</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="hidden">
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-label">Time</span>
+          <span class="stat-value" id="timer">5:00</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Health</span>
+          <span class="stat-value" id="health">10</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Correct</span>
+          <span class="stat-value" id="score">0 / 15</span>
+        </div>
+      </div>
+      <div class="health-bar-container">
+        <div class="health-bar-fill" id="health-bar"></div>
+      </div>
+      <div class="translation-area">
+        <span class="translation-label">Arabic meaning</span>
+        <span class="translation-text" id="translation">يَفْعَلُ</span>
+      </div>
+      <button class="play-button" onclick="playSound()">Play Sound</button>
+      <div class="letters-grid" id="letters-grid"></div>
+      <button class="skip-button" onclick="nextRound()">Skip Round &raquo;</button>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="end-screen" class="hidden end-screen">
+      <h2 id="end-title">Game Over</h2>
+      <div class="certificate">
+        <div class="ar">— ما شاء الله —</div>
+        <div class="en">Congratulations!</div>
+        <div class="score-display" id="final-score">0%</div>
+        <p style="color: var(--grey);">Target word: <strong>"do"</strong></p>
+      </div>
+      <br>
+      <button class="start-btn" onclick="location.reload()">Play Again</button>
+    </div>
+
+    <div class="footer">
+      Inspired by the Eaalim Tables Game · Built for word recognition training
+    </div>
+  </div>
+
+<script>
+// ── Game Data ─────────────────────────────────────────────────────────
+const FOCUSED = {
+  word: "do",
+  translation: "يَفْعَلُ"
+};
+const BACKUP_WORDS = [
+  "be", "go", "see", "get", "run",
+  "eat", "sit", "fly", "say", "use",
+  "let", "put", "ask", "try", "buy",
+  "win", "cut", "fix", "pay", "hit"
+];
+const WIN_TARGET = 15;
+const START_HEALTH = 10;
+const TIME_LIMIT = 300; // 5 minutes
+const CELLS_COUNT = 4;
+
+// ── State ─────────────────────────────────────────────────────────────
+let health = START_HEALTH;
+let correctChoices = 0;
+let timeLeft = TIME_LIMIT;
+let gameOver = false;
+let timerInterval = null;
+
+// ── Speech Synthesis (no MP3 needed) ───────────────────────────────────
+function speak(text) {
+  if (!window.speechSynthesis) {
+    console.warn("Speech synthesis not supported");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-GB";
+  utter.rate = 0.85;
+  utter.pitch = 1.0;
+  // Try to use a clear English voice
+  const voices = window.speechSynthesis.getVoices();
+  const eng = voices.find(v => v.lang.startsWith("en") && v.name.includes("Daniel"))
+           || voices.find(v => v.lang.startsWith("en-GB"))
+           || voices.find(v => v.lang.startsWith("en"));
+  if (eng) utter.voice = eng;
+  window.speechSynthesis.speak(utter);
+}
+
+// ── Game Flow ─────────────────────────────────────────────────────────
+function startGame() {
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("game-screen").classList.remove("hidden");
+  health = START_HEALTH;
+  correctChoices = 0;
+  timeLeft = TIME_LIMIT;
+  gameOver = false;
+  updateUI();
+  startTimer();
+  // Pre-load voices
+  if (window.speechSynthesis.getVoices().length === 0) {
+    window.speechSynthesis.onvoiceschanged = () => nextRound();
+  } else {
+    nextRound();
+  }
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) endGame("lose");
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  const display = `${m}:${s.toString().padStart(2, "0")}`;
+  const timerEl = document.getElementById("timer");
+  timerEl.textContent = display;
+  timerEl.classList.toggle("warning", timeLeft <= 30);
+}
+
+function updateUI() {
+  document.getElementById("health").textContent = health;
+  document.getElementById("score").textContent = `${correctChoices} / ${WIN_TARGET}`;
+  const pct = (health / START_HEALTH) * 100;
+  const fill = document.getElementById("health-bar");
+  fill.style.width = pct + "%";
+  if (pct > 60) {
+    fill.style.background = "linear-gradient(90deg, #27AE60, #7DCEA0)";
+  } else if (pct > 30) {
+    fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
+  } else {
+    fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
+  }
+  document.getElementById("translation").textContent = FOCUSED.translation;
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function nextRound() {
+  if (gameOver) return;
+  // Pick CELLS_COUNT - 1 unique backups + 1 focused
+  const shuffledBackups = shuffleArray([...BACKUP_WORDS]).slice(0, CELLS_COUNT - 1);
+  const round = shuffleArray([FOCUSED.word, ...shuffledBackups]);
+  renderCells(round);
+  setTimeout(() => speak(FOCUSED.word), 350);
+}
+
+function renderCells(words) {
+  const grid = document.getElementById("letters-grid");
+  grid.innerHTML = "";
+  words.forEach(w => {
+    const cell = document.createElement("div");
+    cell.className = "letter-cell";
+    cell.textContent = w;
+    cell.onclick = () => handleClick(cell, w);
+    grid.appendChild(cell);
+  });
+}
+
+function handleClick(cell, word) {
+  if (gameOver) return;
+  // disable all cells briefly
+  document.querySelectorAll(".letter-cell").forEach(c => c.classList.add("disabled"));
+  if (word === FOCUSED.word) {
+    cell.classList.add("correct");
+    correctChoices++;
+    updateUI();
+    if (correctChoices >= WIN_TARGET) {
+      setTimeout(() => endGame("win"), 500);
+    } else {
+      setTimeout(nextRound, 600);
+    }
+  } else {
+    cell.classList.add("wrong");
+    health--;
+    updateUI();
+    if (health <= 0) {
+      setTimeout(() => endGame("lose"), 500);
+    } else {
+      setTimeout(() => {
+        cell.classList.remove("wrong");
+        document.querySelectorAll(".letter-cell").forEach(c => c.classList.remove("disabled"));
+      }, 500);
+    }
+  }
+}
+
+function playSound() {
+  speak(FOCUSED.word);
+}
+
+function endGame(result) {
+  gameOver = true;
+  clearInterval(timerInterval);
+  document.getElementById("game-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.remove("hidden");
+  const titleEl = document.getElementById("end-title");
+  const scoreEl = document.getElementById("final-score");
+  const pct = Math.round((correctChoices / WIN_TARGET) * 100);
+  scoreEl.textContent = pct + "%";
+  if (result === "win") {
+    titleEl.textContent = "🎉 You Won!";
+    titleEl.style.color = "var(--green)";
+    // celebratory chime via Web Audio
+    playWinChime();
+  } else {
+    titleEl.textContent = "Game Over";
+    titleEl.style.color = "var(--red)";
+  }
+}
+
+function playWinChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // C, E, G, C
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = freq;
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
+      gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + i * 0.15 + 0.02);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.15 + 0.3);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(ctx.currentTime + i * 0.15);
+      osc.stop(ctx.currentTime + i * 0.15 + 0.35);
+    });
+  } catch (e) {}
+}
+
+// Preload voices on load
+window.speechSynthesis && window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>

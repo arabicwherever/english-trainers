@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English & Maths Trainers — Interactive Learning Games</title>
+<style>
+  :root {
+    --teal: #0E5E5C;
+    --teal-deep: #083C3B;
+    --gold: #D4AF37;
+    --cream: #FAF7F2;
+    --ink: #1A2E2D;
+    --grey: #6E8282;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+    min-height: 100vh;
+    color: var(--ink);
+    padding: 30px 20px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero {
+    text-align: center;
+    color: var(--cream);
+    margin-bottom: 40px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .hero .gold { color: var(--gold); }
+  .hero p {
+    font-size: 17px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .game-card {
+    background: var(--cream);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: var(--ink);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    border-top: 5px solid var(--gold);
+  }
+  .game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  }
+  .game-icon {
+    font-size: 44px;
+    margin-bottom: 14px;
+  }
+  .game-title {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .game-desc {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .game-tag {
+    display: inline-block;
+    background: var(--teal);
+    color: var(--gold);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    align-self: flex-start;
+  }
+  .play-link {
+    margin-top: 14px;
+    background: var(--gold);
+    color: var(--ink);
+    text-align: center;
+    padding: 12px;
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 15px;
+  }
+  .footer {
+    text-align: center;
+    color: var(--cream);
+    opacity: 0.7;
+    margin-top: 50px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  @media (max-width: 500px) {
+    .hero h1 { font-size: 30px; }
+    .games-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>English &amp; Maths <span class="gold">Trainers</span></h1>
+      <p>Interactive listening, vocabulary and maths games. Tap, listen, and learn — works on any device, no download needed.</p>
+    </div>
+
+    <div class="games-grid">
+
+      <a class="game-card" href="word-do.html">
+        <div class="game-icon">🔤</div>
+        <div class="game-title">Word: "do"</div>
+        <div class="game-desc">Listen to the word and tap the matching cell. Builds single-word recognition.</div>
+        <span class="game-tag">Vocabulary</span>
+        <div class="play-link">▶ Play</div>
+      </a>
+
+      <a class="game-card" href="question-sandwich.html">
+        <div class="game-icon">❓</div>
+        <div class="game-title">Question Match</div>
+        <div class="game-desc">Listen to "do you have a sandwich?" and pick the right question from look-alikes.</div>
+        <span class="game-tag">Listening</span>
+        <div class="play-link">▶ Play</div>
+      </a>
+
+      <a class="game-card" href="build-sentence.html">
+        <div class="game-icon">🧩</div>
+        <div class="game-title">Build the Sentence</div>
+        <div class="game-desc">Listen, then arrange the word tiles in the correct order to build the sentence.</div>
+        <span class="game-tag">Grammar</span>
+        <div class="play-link">▶ Play</div>
+      </a>
+
+      <a class="game-card" href="book-topics.html">
+        <div class="game-icon">📚</div>
+        <div class="game-title">Book Topics</div>
+        <div class="game-desc">22 sentences "This book is about ___". Train your ear on the topic word at the end.</div>
+        <span class="game-tag">Vocabulary · 22</span>
+        <div class="play-link">▶ Play</div>
+      </a>
+
+      <a class="game-card" href="length-units.html">
+        <div class="game-icon">📏</div>
+        <div class="game-title">Length Units</div>
+        <div class="game-desc">100 maths questions converting meters, centimeters and millimeters. 3 modes.</div>
+        <span class="game-tag">Maths · 100</span>
+        <div class="play-link">▶ Play</div>
+      </a>
+
+      <a class="game-card" href="berlits-qa.html">
+        <div class="game-icon">💬</div>
+        <div class="game-title">Berlitz Q&amp;A</div>
+        <div class="game-desc">Questions and answers listening practice in the Berlitz style.</div>
+        <span class="game-tag">Listening</span>
+        <div class="play-link">▶ Play</div>
+      </a>
+
+    </div>
+
+    <div class="footer">
+      Interactive learning games · Built for English &amp; Maths practice<br>
+      Works offline · No login required · Optimised for phones and tablets
+    </div>
+  </div>
+</body>
+</html>
