@@ -68,6 +68,14 @@
 
   .skip-button { background: transparent; color: var(--grey); border: 2px solid var(--grey); padding: 9px 22px; border-radius: 25px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
   .skip-button:hover { background: var(--grey); color: white; }
+  .nav-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .nav-btn {
+    background: var(--teal); color: white; border: none; padding: 10px 18px; border-radius: 22px;
+    cursor: pointer; font-size: 14px; font-weight: 700; transition: transform 0.15s, background 0.2s;
+    box-shadow: 0 3px 10px rgba(14, 94, 92, 0.3);
+  }
+  .nav-btn:hover:not(:disabled) { transform: translateY(-2px); background: var(--teal-deep); }
+  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 
   .start-screen, .end-screen { text-align: center; padding: 20px 0; }
   .start-screen h2, .end-screen h2 { color: var(--teal); font-size: 24px; margin-bottom: 15px; }
@@ -147,7 +155,12 @@
       </div>
 
       <div class="questions-grid" id="questions-grid"></div>
-      <button class="skip-button" onclick="nextRound()">Skip Round &raquo;</button>
+      <div class="nav-row">
+        <button class="nav-btn" id="nav-first" onclick="goFirst()">⏮ First</button>
+        <button class="nav-btn" id="nav-prev"  onclick="goPrev()">◀ Previous</button>
+        <button class="nav-btn" id="nav-next"  onclick="goNext()">Next ▶</button>
+        <button class="nav-btn" id="nav-last"  onclick="goLast()">Last ⏭</button>
+      </div>
     </div>
 
     <!-- END SCREEN -->
@@ -226,6 +239,8 @@ let timeLeft = TIME_LIMIT;
 let gameOver = false;
 let timerInterval = null;
 let currentFocused = null;
+let currentIndex = 0;     // which word/sentence is shown (controlled by score + nav buttons)
+let wordCorrect = [];     // correct count per word
 
 // ── Speech ─────────────────────────────────────────────────────────────
 function speak(text, rate) {
@@ -274,6 +289,8 @@ function startGame() {
   document.getElementById("game-screen").classList.remove("hidden");
   health = START_HEALTH;
   correctChoices = 0;
+  currentIndex = 0;
+  wordCorrect = FOCUSED.map(() => 0);
   timeLeft = TIME_LIMIT;
   gameOver = false;
   document.getElementById("phrase-total").textContent = FOCUSED.length;
@@ -312,12 +329,34 @@ function updateUI() {
   else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
   else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
 
-  const idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
-  const progressInWord = correctChoices - (idx * ROUNDS_PER_FOCUSED);
+  const idx = currentIndex;
+  const progressInWord = Math.min(wordCorrect[idx] || 0, ROUNDS_PER_FOCUSED);
   document.getElementById("phrase-num").textContent = idx + 1;
   document.getElementById("phrase-progress").textContent = `${progressInWord}/${ROUNDS_PER_FOCUSED}`;
   document.getElementById("word-chip").textContent = FOCUSED[idx].word;
+  updateNavButtons();
 }
+
+// Enable/disable the navigation buttons at the list bounds
+function updateNavButtons() {
+  const first = document.getElementById("nav-first");
+  const prev  = document.getElementById("nav-prev");
+  const next  = document.getElementById("nav-next");
+  const last  = document.getElementById("nav-last");
+  if (!first) return;
+  const atStart = currentIndex <= 0;
+  const atEnd = currentIndex >= FOCUSED.length - 1;
+  first.disabled = atStart;
+  prev.disabled  = atStart;
+  next.disabled  = atEnd;
+  last.disabled  = atEnd;
+}
+
+// ── Navigation buttons (manual jump between sentences) ────────────────
+function goFirst() { if (gameOver) return; currentIndex = 0; nextRound(); }
+function goPrev()  { if (gameOver) return; if (currentIndex > 0) currentIndex--; nextRound(); }
+function goNext()  { if (gameOver) return; if (currentIndex < FOCUSED.length - 1) currentIndex++; nextRound(); }
+function goLast()  { if (gameOver) return; currentIndex = FOCUSED.length - 1; nextRound(); }
 
 function shuffleArray(arr) {
   const a = [...arr];
@@ -330,7 +369,7 @@ function shuffleArray(arr) {
 
 function nextRound() {
   if (gameOver) return;
-  const idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
+  const idx = currentIndex;
   currentFocused = FOCUSED[idx];
 
   const otherFocused = FOCUSED.filter((_, i) => i !== idx).map(f => f.phrase);
@@ -362,11 +401,18 @@ function handleClick(cell, phrase) {
   if (phrase === currentFocused.phrase) {
     cell.classList.add("correct");
     correctChoices++;
+    wordCorrect[currentIndex] = (wordCorrect[currentIndex] || 0) + 1;
     updateUI();
     if (correctChoices >= WIN_TARGET) {
       setTimeout(() => endGame("win"), 700);
     } else {
-      setTimeout(nextRound, 700);
+      setTimeout(() => {
+        // auto-advance to the next word once this one hits its rep target
+        if (wordCorrect[currentIndex] >= ROUNDS_PER_FOCUSED && currentIndex < FOCUSED.length - 1) {
+          currentIndex++;
+        }
+        nextRound();
+      }, 700);
     }
   } else {
     cell.classList.add("wrong");
