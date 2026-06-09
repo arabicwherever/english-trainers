@@ -329,9 +329,8 @@
       <h2>Listen, choose, then write</h2>
       <div class="level-info" id="level-info">20 cards</div>
       <p>
-        Listen to the <strong>question &amp; answer</strong>, tap the matching card,<br>
-        then <strong>type the sentence correctly</strong> to unlock the next one.<br>
-        Each card is repeated <strong id="t-reps">10</strong> times.<br>
+        Listen &amp; tap the matching card <strong id="t-reps">10</strong> times,<br>
+        then <strong>type the whole sentence correctly</strong> to unlock the next card.<br>
         Target: <strong id="t-target">200</strong> correct ·
         Health: <strong id="t-health">50</strong> ·
         Time: <strong id="t-time">25:00</strong>.
@@ -541,8 +540,15 @@ function updateUI() {
   else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
   else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
 
-  const idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
-  const progressInCard = correctChoices - (idx * ROUNDS_PER_FOCUSED);
+  let idx, progressInCard;
+  if (awaitingWrite) {
+    // A card just finished its 10 reps and is being written → show that card as 10/10.
+    idx = Math.min(Math.ceil(correctChoices / ROUNDS_PER_FOCUSED) - 1, FOCUSED.length - 1);
+    progressInCard = ROUNDS_PER_FOCUSED;
+  } else {
+    idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
+    progressInCard = correctChoices - (idx * ROUNDS_PER_FOCUSED);
+  }
   document.getElementById("phrase-num").textContent = idx + 1;
   document.getElementById("phrase-progress").textContent = `${progressInCard}/${ROUNDS_PER_FOCUSED}`;
 }
@@ -591,8 +597,14 @@ function handleClick(cell, phrase) {
   document.querySelectorAll(".question-cell").forEach(c => c.classList.add("disabled"));
   if (phrase === currentFocused.phrase) {
     cell.classList.add("correct");
-    // Don't advance yet — student must WRITE the sentence correctly first.
-    setTimeout(enterWriteMode, 450);
+    correctChoices++;
+    if (correctChoices % ROUNDS_PER_FOCUSED === 0) {
+      // This card just finished its 10 reps → must WRITE it before moving on.
+      setTimeout(enterWriteMode, 450);
+    } else {
+      updateUI();
+      setTimeout(nextRound, 700);
+    }
   } else {
     cell.classList.add("wrong");
     health--;
@@ -621,6 +633,7 @@ function normalizeText(t) {
 
 function enterWriteMode() {
   awaitingWrite = true;
+  updateUI();
   document.getElementById("write-model").textContent = currentFocused.phrase;
   const inp = document.getElementById("write-input");
   inp.value = "";
@@ -654,12 +667,10 @@ function checkWrite() {
     inp.classList.add("good"); inp.classList.remove("bad");
     fb.textContent = "✓ صحيح! ممتاز"; fb.className = "write-feedback ok";
     awaitingWrite = false;
-    correctChoices++;
-    updateUI();
     setTimeout(() => {
       document.getElementById("write-panel").classList.add("hidden");
       if (correctChoices >= WIN_TARGET) endGame("win");
-      else nextRound();
+      else { updateUI(); nextRound(); }
     }, 650);
   } else {
     inp.classList.add("bad"); inp.classList.remove("good");
