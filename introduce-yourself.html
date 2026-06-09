@@ -285,6 +285,19 @@
     font-weight: 900;
     margin: 12px 0;
   }
+  /* ── Writing gate ── */
+  .write-panel { background: white; padding: 18px; border-radius: 14px; border: 2px dashed var(--teal); margin-bottom: 14px; text-align: left; }
+  .write-label { font-size: 13px; color: var(--teal); font-weight: 800; margin-bottom: 10px; direction: rtl; line-height: 1.5; }
+  .write-model { font-size: 17px; font-weight: 700; color: var(--teal-deep); background: var(--cream); padding: 11px 13px; border-radius: 8px; margin-bottom: 12px; line-height: 1.55; border-left: 4px solid var(--gold); }
+  .write-input { width: 100%; font-size: 17px; padding: 12px 14px; border: 2px solid var(--grey); border-radius: 10px; font-family: inherit; resize: none; line-height: 1.5; }
+  .write-input:focus { outline: none; border-color: var(--gold); }
+  .write-input.good { border-color: var(--green); background: #EAF7EF; }
+  .write-input.bad  { border-color: var(--red);   background: #FBEAE8; }
+  .write-feedback { font-size: 14px; font-weight: 800; margin: 10px 0 4px; min-height: 20px; direction: rtl; }
+  .write-feedback.ok  { color: var(--green); }
+  .write-feedback.bad { color: var(--red); }
+  .write-check { background: var(--teal); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 15px; font-weight: 800; transition: transform 0.15s, background 0.2s; box-shadow: 0 3px 10px rgba(14,94,92,0.3); }
+  .write-check:hover { transform: translateY(-2px); background: var(--teal-deep); }
   .hidden { display: none !important; }
   .footer {
     margin-top: 25px;
@@ -313,10 +326,11 @@
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
-      <h2>Listen and pick the right question &amp; answer</h2>
+      <h2>Listen, choose, then write</h2>
       <div class="level-info" id="level-info">20 cards</div>
       <p>
-        Listen to the full <strong>question &amp; answer</strong>, then tap the matching card.<br>
+        Listen to the <strong>question &amp; answer</strong>, tap the matching card,<br>
+        then <strong>type the sentence correctly</strong> to unlock the next one.<br>
         Each card is repeated <strong id="t-reps">10</strong> times.<br>
         Target: <strong id="t-target">200</strong> correct ·
         Health: <strong id="t-health">50</strong> ·
@@ -365,7 +379,17 @@
       </div>
 
       <div class="questions-grid" id="questions-grid"></div>
-      <button class="skip-button" onclick="nextRound()">Skip Round &raquo;</button>
+
+      <!-- WRITING GATE: must type the sentence correctly to continue -->
+      <div id="write-panel" class="write-panel hidden">
+        <div class="write-label">✍️ اكتب الجملة بشكل صحيح للانتقال للجملة التالية — Type the sentence correctly to continue</div>
+        <div class="write-model" id="write-model"></div>
+        <textarea id="write-input" class="write-input" rows="2" placeholder="اكتب هنا… / type here…"
+                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                  oninput="liveWrite()" onkeydown="if(event.key==='Enter'){event.preventDefault();checkWrite();}"></textarea>
+        <div class="write-feedback" id="write-feedback"></div>
+        <button class="write-check" id="write-check" onclick="checkWrite()">✓ تحقق / Check</button>
+      </div>
     </div>
 
     <!-- END SCREEN -->
@@ -534,6 +558,8 @@ function shuffleArray(arr) {
 
 function nextRound() {
   if (gameOver) return;
+  awaitingWrite = false;
+  document.getElementById("write-panel").classList.add("hidden");
   const idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
   currentFocused = FOCUSED[idx];
 
@@ -565,13 +591,8 @@ function handleClick(cell, phrase) {
   document.querySelectorAll(".question-cell").forEach(c => c.classList.add("disabled"));
   if (phrase === currentFocused.phrase) {
     cell.classList.add("correct");
-    correctChoices++;
-    updateUI();
-    if (correctChoices >= WIN_TARGET) {
-      setTimeout(() => endGame("win"), 700);
-    } else {
-      setTimeout(nextRound, 700);
-    }
+    // Don't advance yet — student must WRITE the sentence correctly first.
+    setTimeout(enterWriteMode, 450);
   } else {
     cell.classList.add("wrong");
     health--;
@@ -584,6 +605,67 @@ function handleClick(cell, phrase) {
         document.querySelectorAll(".question-cell").forEach(c => c.classList.remove("disabled"));
       }, 500);
     }
+  }
+}
+
+// ── Writing gate ───────────────────────────────────────────────────────
+let awaitingWrite = false;
+
+function normalizeText(t) {
+  return t.toLowerCase()
+          .replace(/[—–-]/g, " ")        // any dash → space
+          .replace(/[^a-z0-9 ]/g, " ")   // drop punctuation
+          .replace(/\s+/g, " ")
+          .trim();
+}
+
+function enterWriteMode() {
+  awaitingWrite = true;
+  document.getElementById("write-model").textContent = currentFocused.phrase;
+  const inp = document.getElementById("write-input");
+  inp.value = "";
+  inp.classList.remove("good", "bad");
+  const fb = document.getElementById("write-feedback");
+  fb.textContent = "";
+  fb.className = "write-feedback";
+  document.getElementById("write-panel").classList.remove("hidden");
+  setTimeout(() => inp.focus(), 60);
+}
+
+function liveWrite() {
+  const inp = document.getElementById("write-input");
+  const target = normalizeText(currentFocused.phrase).split(" ").filter(Boolean);
+  const typed  = normalizeText(inp.value).split(" ").filter(Boolean);
+  let matched = 0;
+  for (let i = 0; i < target.length; i++) { if (typed[i] === target[i]) matched++; else break; }
+  const full = matched === target.length && typed.length === target.length;
+  inp.classList.toggle("good", full);
+  inp.classList.remove("bad");
+  const fb = document.getElementById("write-feedback");
+  if (full) { fb.textContent = "✓ صحيح! اضغط تحقق أو Enter"; fb.className = "write-feedback ok"; }
+  else { fb.textContent = `تطابق: ${matched} / ${target.length} كلمة`; fb.className = "write-feedback"; }
+}
+
+function checkWrite() {
+  if (!awaitingWrite || gameOver) return;
+  const inp = document.getElementById("write-input");
+  const fb  = document.getElementById("write-feedback");
+  if (normalizeText(inp.value) === normalizeText(currentFocused.phrase)) {
+    inp.classList.add("good"); inp.classList.remove("bad");
+    fb.textContent = "✓ صحيح! ممتاز"; fb.className = "write-feedback ok";
+    awaitingWrite = false;
+    correctChoices++;
+    updateUI();
+    setTimeout(() => {
+      document.getElementById("write-panel").classList.add("hidden");
+      if (correctChoices >= WIN_TARGET) endGame("win");
+      else nextRound();
+    }, 650);
+  } else {
+    inp.classList.add("bad"); inp.classList.remove("good");
+    fb.textContent = "✗ غير صحيح — صحّح الجملة، لن تنتقل قبل أن تكتبها صح";
+    fb.className = "write-feedback bad";
+    inp.focus();
   }
 }
 
