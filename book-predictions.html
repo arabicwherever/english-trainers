@@ -417,11 +417,12 @@ const FOCUSED = [
 // practice). No separate backup list needed.
 const BACKUP = [];
 
-const WIN_TARGET = 52;       // 26 sentences × 2 correct each
-const START_HEALTH = 25;
-const TIME_LIMIT = 480;      // 8:00
+const REPEAT_PER_SENTENCE = 10;                       // each sentence 10 times
+const WIN_TARGET = FOCUSED.length * REPEAT_PER_SENTENCE; // 26 × 10 = 260
+const START_HEALTH = 50;
+const TIME_LIMIT = 1200;     // 20:00
 const CELLS_COUNT = 4;
-const ROUNDS_PER_FOCUSED = Math.floor(WIN_TARGET / FOCUSED.length); // 2
+const ROUNDS_PER_FOCUSED = REPEAT_PER_SENTENCE;      // 10
 
 // ── State ─────────────────────────────────────────────────────────────
 let health = START_HEALTH;
@@ -460,9 +461,18 @@ function playSound(rate) {
     list.appendChild(li);
   });
   // Sync the start-screen numbers with the data
-  document.getElementById("level-info").textContent = FOCUSED.length + " sentences";
+  const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+  document.getElementById("level-info").textContent =
+    `${FOCUSED.length} sentences × ${REPEAT_PER_SENTENCE}`;
   document.getElementById("t-target").textContent = WIN_TARGET;
   document.getElementById("t-health").textContent = START_HEALTH;
+  document.getElementById("t-time").textContent = fmt(TIME_LIMIT);
+  // in-game initial placeholders
+  document.getElementById("timer").textContent = fmt(TIME_LIMIT);
+  document.getElementById("health").textContent = START_HEALTH;
+  document.getElementById("score").textContent = `0 / ${WIN_TARGET}`;
+  document.getElementById("phrase-total").textContent = FOCUSED.length;
+  document.getElementById("phrase-progress").textContent = `0/${ROUNDS_PER_FOCUSED}`;
 })();
 
 // ── Game Flow ─────────────────────────────────────────────────────────
