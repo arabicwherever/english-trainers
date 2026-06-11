@@ -298,6 +298,10 @@
   .write-feedback.bad { color: var(--red); }
   .write-check { background: var(--teal); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 15px; font-weight: 800; transition: transform 0.15s, background 0.2s; box-shadow: 0 3px 10px rgba(14,94,92,0.3); }
   .write-check:hover { transform: translateY(-2px); background: var(--teal-deep); }
+  .nav-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:6px; margin-bottom:6px; }
+  .nav-btn { background: var(--teal); color:#fff; border:none; padding:10px 24px; border-radius:22px; cursor:pointer; font-size:14px; font-weight:700; transition:transform .15s, background .2s; box-shadow:0 3px 10px rgba(14,94,92,0.3); }
+  .nav-btn:hover:not(:disabled){ transform:translateY(-2px); background:var(--teal-deep); }
+  .nav-btn:disabled{ opacity:.4; cursor:not-allowed; box-shadow:none; }
   .hidden { display: none !important; }
   .footer {
     margin-top: 25px;
@@ -379,6 +383,10 @@
 
       <div class="questions-grid" id="questions-grid"></div>
 
+      <div class="nav-row">
+        <button class="nav-btn" id="nav-prev" onclick="goPrev()">◀ السابقة</button>
+        <button class="nav-btn" id="nav-next" onclick="goNext()">التالية ▶</button>
+      </div>
       <!-- WRITING GATE: must type the sentence correctly to continue -->
       <div id="write-panel" class="write-panel hidden">
         <div class="write-label">✍️ اكتب الجملة بشكل صحيح للانتقال للجملة التالية — Type the sentence correctly to continue</div>
@@ -478,12 +486,8 @@ let currentFocused = null;
 function speak(text, rate) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  // read the dash as a pause, not a word
-  const clean = text.replace(/—/g, ",");
-  const utter = new SpeechSynthesisUtterance(clean);
-  utter.lang = "en-GB";
-  utter.rate = rate || 1.0;
-  utter.pitch = 1.0;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-GB"; utter.rate = rate || 1.0; utter.pitch = 1.0;
   const voices = window.speechSynthesis.getVoices();
   const eng = voices.find(v => v.lang.startsWith("en") && v.name.includes("Daniel"))
            || voices.find(v => v.lang.startsWith("en-GB"))
@@ -491,110 +495,101 @@ function speak(text, rate) {
   if (eng) utter.voice = eng;
   window.speechSynthesis.speak(utter);
 }
+function playSound(rate) { if (currentFocused) speak(currentFocused.phrase, rate); }
 
-function playSound(rate) {
-  if (currentFocused) speak(currentFocused.phrase, rate);
-}
+// ── New navigation state ──
+let currentIndex = 0;
+let wordCorrect = [];
+let awaitingWrite = false;
 
-// ── Init preview + sync numbers ────────────────────────────────────────
 (function fillPreview() {
   const list = document.getElementById("phrases-list");
-  FOCUSED.forEach(f => {
+  if (list) FOCUSED.forEach(f => {
     const li = document.createElement("li");
-    li.innerHTML = `<strong>${f.phrase}</strong><br><span style="color:#6E8282; direction:rtl; font-family:'Amiri','Geeza Pro',serif;">${f.translation}</span>`;
+    const w = f.word ? '<span class="w" style="color:#0E5E5C;font-weight:800;">' + f.word + '</span> \u2014 ' : "";
+    li.innerHTML = w + f.phrase + ' <span style="color:#6E8282; direction:rtl; font-family:\'Amiri\',\'Geeza Pro\',serif;">' + f.translation + '</span>';
     list.appendChild(li);
   });
-  const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
-  document.getElementById("level-info").textContent =
-    `${FOCUSED.length} cards × ${REPEAT_PER_CARD}`;
-  document.getElementById("t-reps").textContent = REPEAT_PER_CARD;
-  document.getElementById("t-target").textContent = WIN_TARGET;
-  document.getElementById("t-health").textContent = START_HEALTH;
-  document.getElementById("t-time").textContent = fmt(TIME_LIMIT);
-  document.getElementById("timer").textContent = fmt(TIME_LIMIT);
-  document.getElementById("health").textContent = START_HEALTH;
-  document.getElementById("score").textContent = `0 / ${WIN_TARGET}`;
-  document.getElementById("phrase-total").textContent = FOCUSED.length;
-  document.getElementById("phrase-progress").textContent = `0/${ROUNDS_PER_FOCUSED}`;
+  const fmt = s => Math.floor(s/60) + ":" + String(s%60).padStart(2,"0");
+  const set = (id,v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set("t-reps", ROUNDS_PER_FOCUSED);
+  set("t-target", WIN_TARGET);
+  set("t-health", START_HEALTH);
+  set("t-time", fmt(TIME_LIMIT));
+  set("timer", fmt(TIME_LIMIT));
+  set("health", START_HEALTH);
+  set("score", "0 / " + WIN_TARGET);
+  set("phrase-total", FOCUSED.length);
+  set("phrase-progress", "0/" + ROUNDS_PER_FOCUSED);
 })();
 
-// ── Game Flow ─────────────────────────────────────────────────────────
 function startGame() {
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("game-screen").classList.remove("hidden");
-  health = START_HEALTH;
-  correctChoices = 0;
-  timeLeft = TIME_LIMIT;
-  gameOver = false;
+  health = START_HEALTH; correctChoices = 0; currentIndex = 0;
+  wordCorrect = FOCUSED.map(() => 0);
+  timeLeft = TIME_LIMIT; gameOver = false; awaitingWrite = false;
   document.getElementById("phrase-total").textContent = FOCUSED.length;
-  updateUI();
-  startTimer();
-  if (window.speechSynthesis.getVoices().length === 0) {
-    window.speechSynthesis.onvoiceschanged = () => nextRound();
-  } else {
-    nextRound();
-  }
+  updateUI(); startTimer();
+  if (window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => nextRound();
+  else nextRound();
 }
 
 function startTimer() {
   timerInterval = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay();
+    timeLeft--; updateTimerDisplay();
     if (timeLeft <= 0) endGame("lose");
   }, 1000);
 }
-
 function updateTimerDisplay() {
-  const m = Math.floor(timeLeft / 60);
-  const s = timeLeft % 60;
+  const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
   const t = document.getElementById("timer");
-  t.textContent = `${m}:${s.toString().padStart(2, "0")}`;
+  t.textContent = m + ":" + s.toString().padStart(2, "0");
   t.classList.toggle("warning", timeLeft <= 30);
 }
 
 function updateUI() {
   document.getElementById("health").textContent = health;
-  document.getElementById("score").textContent = `${correctChoices} / ${WIN_TARGET}`;
+  document.getElementById("score").textContent = correctChoices + " / " + WIN_TARGET;
   const pct = (health / START_HEALTH) * 100;
   const fill = document.getElementById("health-bar");
   fill.style.width = pct + "%";
   if (pct > 60) fill.style.background = "linear-gradient(90deg, #27AE60, #7DCEA0)";
   else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
   else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
-
-  let idx, progressInCard;
-  if (awaitingWrite) {
-    // A card just finished its 10 reps and is being written → show that card as 10/10.
-    idx = Math.min(Math.ceil(correctChoices / ROUNDS_PER_FOCUSED) - 1, FOCUSED.length - 1);
-    progressInCard = ROUNDS_PER_FOCUSED;
-  } else {
-    idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
-    progressInCard = correctChoices - (idx * ROUNDS_PER_FOCUSED);
-  }
+  const idx = currentIndex;
+  const progressInCard = Math.min(wordCorrect[idx] || 0, ROUNDS_PER_FOCUSED);
   document.getElementById("phrase-num").textContent = idx + 1;
-  document.getElementById("phrase-progress").textContent = `${progressInCard}/${ROUNDS_PER_FOCUSED}`;
+  document.getElementById("phrase-progress").textContent = progressInCard + "/" + ROUNDS_PER_FOCUSED;
+  const chip = document.getElementById("word-chip");
+  if (chip && FOCUSED[idx] && FOCUSED[idx].word) chip.textContent = FOCUSED[idx].word;
+  updateNavButtons();
 }
+function updateNavButtons() {
+  const prev = document.getElementById("nav-prev"), next = document.getElementById("nav-next");
+  if (!prev || !next) return;
+  prev.disabled = awaitingWrite || currentIndex <= 0;
+  next.disabled = awaitingWrite || currentIndex >= FOCUSED.length - 1;
+}
+
+function goPrev() { if (gameOver || awaitingWrite) return; if (currentIndex > 0) { currentIndex--; nextRound(); } }
+function goNext() { if (gameOver || awaitingWrite) return; if (currentIndex < FOCUSED.length - 1) { currentIndex++; nextRound(); } }
 
 function shuffleArray(arr) {
   const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
 
 function nextRound() {
   if (gameOver) return;
   awaitingWrite = false;
-  document.getElementById("write-panel").classList.add("hidden");
-  const idx = Math.min(Math.floor(correctChoices / ROUNDS_PER_FOCUSED), FOCUSED.length - 1);
+  const wp = document.getElementById("write-panel"); if (wp) wp.classList.add("hidden");
+  const idx = currentIndex;
   currentFocused = FOCUSED[idx];
-
-  const otherFocused = FOCUSED.filter((_, i) => i !== idx).map(f => f.phrase);
-  const pool = shuffleArray([...BACKUP, ...otherFocused]);
+  const others = FOCUSED.filter((_, i) => i !== idx).map(f => f.phrase);
+  const pool = shuffleArray([...BACKUP, ...others]);
   const distractors = pool.slice(0, CELLS_COUNT - 1);
-
   const cellsContent = shuffleArray([currentFocused.phrase, ...distractors]);
   document.getElementById("translation").textContent = currentFocused.translation;
   renderCells(cellsContent);
@@ -615,58 +610,40 @@ function renderCells(phrases) {
 }
 
 function handleClick(cell, phrase) {
-  if (gameOver) return;
+  if (gameOver || awaitingWrite) return;
   document.querySelectorAll(".question-cell").forEach(c => c.classList.add("disabled"));
   if (phrase === currentFocused.phrase) {
     cell.classList.add("correct");
-    correctChoices++;
-    if (correctChoices % ROUNDS_PER_FOCUSED === 0) {
-      // This card just finished its 10 reps → must WRITE it before moving on.
+    if ((wordCorrect[currentIndex] || 0) < ROUNDS_PER_FOCUSED) {
+      wordCorrect[currentIndex] = (wordCorrect[currentIndex] || 0) + 1;
+      correctChoices++;
+    }
+    updateUI();
+    const justCompleted = (wordCorrect[currentIndex] || 0) === ROUNDS_PER_FOCUSED;
+    if (justCompleted) {
       setTimeout(enterWriteMode, 450);
     } else {
-      updateUI();
       setTimeout(nextRound, 700);
     }
   } else {
-    cell.classList.add("wrong");
-    health--;
-    updateUI();
-    if (health <= 0) {
-      setTimeout(() => endGame("lose"), 500);
-    } else {
-      setTimeout(() => {
-        cell.classList.remove("wrong");
-        document.querySelectorAll(".question-cell").forEach(c => c.classList.remove("disabled"));
-      }, 500);
-    }
+    cell.classList.add("wrong"); health--; updateUI();
+    if (health <= 0) { setTimeout(() => endGame("lose"), 500); }
+    else { setTimeout(() => { cell.classList.remove("wrong"); document.querySelectorAll(".question-cell").forEach(c => c.classList.remove("disabled")); }, 500); }
   }
 }
 
-// ── Writing gate ───────────────────────────────────────────────────────
-let awaitingWrite = false;
-
 function normalizeText(t) {
-  return t.toLowerCase()
-          .replace(/[—–-]/g, " ")        // any dash → space
-          .replace(/[^a-z0-9 ]/g, " ")   // drop punctuation
-          .replace(/\s+/g, " ")
-          .trim();
+  return t.toLowerCase().replace(/[\u2014\u2013-]/g, " ").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 }
-
 function enterWriteMode() {
-  awaitingWrite = true;
-  updateUI();
+  awaitingWrite = true; updateUI();
   document.getElementById("write-model").textContent = currentFocused.phrase;
   const inp = document.getElementById("write-input");
-  inp.value = "";
-  inp.classList.remove("good", "bad");
-  const fb = document.getElementById("write-feedback");
-  fb.textContent = "";
-  fb.className = "write-feedback";
+  inp.value = ""; inp.classList.remove("good", "bad");
+  const fb = document.getElementById("write-feedback"); fb.textContent = ""; fb.className = "write-feedback";
   document.getElementById("write-panel").classList.remove("hidden");
   setTimeout(() => inp.focus(), 60);
 }
-
 function liveWrite() {
   const inp = document.getElementById("write-input");
   const target = normalizeText(currentFocused.phrase).split(" ").filter(Boolean);
@@ -674,31 +651,29 @@ function liveWrite() {
   let matched = 0;
   for (let i = 0; i < target.length; i++) { if (typed[i] === target[i]) matched++; else break; }
   const full = matched === target.length && typed.length === target.length;
-  inp.classList.toggle("good", full);
-  inp.classList.remove("bad");
+  inp.classList.toggle("good", full); inp.classList.remove("bad");
   const fb = document.getElementById("write-feedback");
-  if (full) { fb.textContent = "✓ صحيح! اضغط تحقق أو Enter"; fb.className = "write-feedback ok"; }
-  else { fb.textContent = `تطابق: ${matched} / ${target.length} كلمة`; fb.className = "write-feedback"; }
+  if (full) { fb.textContent = "\u2713 \u0635\u062d\u064a\u062d! \u0627\u0636\u063a\u0637 \u062a\u062d\u0642\u0642 \u0623\u0648 Enter"; fb.className = "write-feedback ok"; }
+  else { fb.textContent = "\u062a\u0637\u0627\u0628\u0642: " + matched + " / " + target.length + " \u0643\u0644\u0645\u0629"; fb.className = "write-feedback"; }
 }
-
 function checkWrite() {
   if (!awaitingWrite || gameOver) return;
   const inp = document.getElementById("write-input");
   const fb  = document.getElementById("write-feedback");
   if (normalizeText(inp.value) === normalizeText(currentFocused.phrase)) {
     inp.classList.add("good"); inp.classList.remove("bad");
-    fb.textContent = "✓ صحيح! ممتاز"; fb.className = "write-feedback ok";
+    fb.textContent = "\u2713 \u0635\u062d\u064a\u062d! \u0645\u0645\u062a\u0627\u0632"; fb.className = "write-feedback ok";
     awaitingWrite = false;
     setTimeout(() => {
       document.getElementById("write-panel").classList.add("hidden");
-      if (correctChoices >= WIN_TARGET) endGame("win");
-      else { updateUI(); nextRound(); }
+      if (correctChoices >= WIN_TARGET) { endGame("win"); return; }
+      if (currentIndex < FOCUSED.length - 1) currentIndex++;
+      updateUI(); nextRound();
     }, 650);
   } else {
     inp.classList.add("bad"); inp.classList.remove("good");
-    fb.textContent = "✗ غير صحيح — صحّح الجملة، لن تنتقل قبل أن تكتبها صح";
-    fb.className = "write-feedback bad";
-    inp.focus();
+    fb.textContent = "\u2717 \u063a\u064a\u0631 \u0635\u062d\u064a\u062d \u2014 \u0635\u062d\u0651\u062d \u0627\u0644\u062c\u0645\u0644\u0629\u060c \u0644\u0646 \u062a\u0646\u062a\u0642\u0644 \u0642\u0628\u0644 \u0623\u0646 \u062a\u0643\u062a\u0628\u0647\u0627 \u0635\u062d";
+    fb.className = "write-feedback bad"; inp.focus();
   }
 }
 
@@ -711,14 +686,8 @@ function endGame(result) {
   const scoreEl = document.getElementById("final-score");
   const pct = Math.round((correctChoices / WIN_TARGET) * 100);
   scoreEl.textContent = pct + "%";
-  if (result === "win") {
-    titleEl.textContent = "🎉 You Won!";
-    titleEl.style.color = "var(--green)";
-    playWinChime();
-  } else {
-    titleEl.textContent = "Game Over";
-    titleEl.style.color = "var(--red)";
-  }
+  if (result === "win") { titleEl.textContent = "\ud83c\udf89 You Won!"; titleEl.style.color = "var(--green)"; playWinChime(); }
+  else { titleEl.textContent = "Game Over"; titleEl.style.color = "var(--red)"; }
 }
 
 function playWinChime() {
@@ -726,16 +695,13 @@ function playWinChime() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const notes = [523.25, 659.25, 783.99, 1046.50];
     notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.frequency.value = freq;
-      osc.type = "sine";
+      const osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.frequency.value = freq; osc.type = "sine";
       gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
       gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + i * 0.15 + 0.02);
       gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.15 + 0.3);
       osc.connect(gain).connect(ctx.destination);
-      osc.start(ctx.currentTime + i * 0.15);
-      osc.stop(ctx.currentTime + i * 0.15 + 0.35);
+      osc.start(ctx.currentTime + i * 0.15); osc.stop(ctx.currentTime + i * 0.15 + 0.35);
     });
   } catch (e) {}
 }
