@@ -368,8 +368,10 @@
 
       <div class="questions-grid" id="questions-grid"></div>
       <div class="nav-row">
+        <button class="nav-btn" id="nav-first" onclick="goFirst()">⏮ First</button>
         <button class="nav-btn" id="nav-prev" onclick="goPrev()">◀ Previous</button>
         <button class="nav-btn" id="nav-next" onclick="goNext()">Next ▶</button>
+        <button class="nav-btn" id="nav-last" onclick="goLast()">Last ⏭</button>
       </div>
     </div>
 
@@ -516,14 +518,19 @@ function updateUI() {
   updateNavButtons();
 }
 function updateNavButtons() {
-  const prev = document.getElementById("nav-prev"), next = document.getElementById("nav-next");
-  if (!prev || !next) return;
-  prev.disabled = awaitingWrite || currentIndex <= 0;
-  next.disabled = awaitingWrite || currentIndex >= FOCUSED.length - 1;
+  const atStart = awaitingWrite || currentIndex <= 0;
+  const atEnd = awaitingWrite || currentIndex >= FOCUSED.length - 1;
+  const set = (id, d) => { const e = document.getElementById(id); if (e) e.disabled = d; };
+  set("nav-first", atStart);
+  set("nav-prev", atStart);
+  set("nav-next", atEnd);
+  set("nav-last", atEnd);
 }
 
 function goPrev() { if (gameOver || awaitingWrite) return; if (currentIndex > 0) { currentIndex--; nextRound(); } }
 function goNext() { if (gameOver || awaitingWrite) return; if (currentIndex < FOCUSED.length - 1) { currentIndex++; nextRound(); } }
+function goFirst() { if (gameOver || awaitingWrite) return; if (currentIndex !== 0) { currentIndex = 0; nextRound(); } }
+function goLast() { if (gameOver || awaitingWrite) return; const last = FOCUSED.length - 1; if (currentIndex !== last) { currentIndex = last; nextRound(); } }
 
 function shuffleArray(arr) {
   const a = [...arr];
