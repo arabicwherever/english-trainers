@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English & Maths Trainers — Interactive Learning Games</title>
+<title>English &amp; Maths Trainers — Interactive Learning Games</title>
 <style>
   :root {
     --teal: #0E5E5C;
@@ -21,99 +21,59 @@
     color: var(--ink);
     padding: 30px 20px;
   }
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .hero {
-    text-align: center;
-    color: var(--cream);
-    margin-bottom: 40px;
-  }
-  .hero h1 {
-    font-size: 42px;
-    font-weight: 900;
-    margin-bottom: 12px;
-  }
+  .container { max-width: 980px; margin: 0 auto; }
+  .hero { text-align: center; color: var(--cream); margin-bottom: 30px; }
+  .hero h1 { font-size: 42px; font-weight: 900; margin-bottom: 12px; }
   .hero .gold { color: var(--gold); }
-  .hero p {
-    font-size: 17px;
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
+  .hero p { font-size: 17px; opacity: 0.9; max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
+  /* Quick jump nav */
+  .toc { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 26px auto 10px; }
+  .toc a {
+    background: rgba(255,255,255,0.12); color: var(--cream); text-decoration: none;
+    padding: 8px 16px; border-radius: 22px; font-size: 13px; font-weight: 700;
+    border: 1px solid rgba(212,175,55,0.5); transition: background 0.2s, transform 0.15s;
   }
-  .games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
+  .toc a:hover { background: var(--gold); color: var(--ink); transform: translateY(-2px); }
+
+  /* Sections */
+  .section { margin-top: 42px; scroll-margin-top: 20px; }
+  .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .section-head h2 { color: var(--cream); font-size: 24px; font-weight: 900; }
+  .section-head .badge {
+    background: var(--gold); color: var(--ink); font-size: 12px; font-weight: 800;
+    padding: 4px 12px; border-radius: 14px; white-space: nowrap;
   }
+  .section-sub { color: var(--cream); opacity: 0.75; font-size: 14px; margin-bottom: 18px; }
+  .section-rule { height: 3px; background: linear-gradient(90deg, var(--gold), transparent); border-radius: 3px; margin-bottom: 20px; }
+
+  .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
   .game-card {
-    background: var(--cream);
-    border-radius: 18px;
-    padding: 28px 24px;
-    text-decoration: none;
-    color: var(--ink);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
+    background: var(--cream); border-radius: 18px; padding: 24px 22px; text-decoration: none;
+    color: var(--ink); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
     border-top: 5px solid var(--gold);
   }
-  .game-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-  }
-  .game-icon {
-    font-size: 44px;
-    margin-bottom: 14px;
-  }
-  .game-title {
-    font-size: 21px;
-    font-weight: 800;
-    color: var(--teal);
-    margin-bottom: 8px;
-  }
-  .game-desc {
-    font-size: 14px;
-    color: var(--grey);
-    line-height: 1.5;
-    flex: 1;
-    margin-bottom: 16px;
-  }
+  .game-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+  .game-icon { font-size: 40px; margin-bottom: 12px; }
+  .game-title { font-size: 20px; font-weight: 800; color: var(--teal); margin-bottom: 8px; }
+  .game-desc { font-size: 13.5px; color: var(--grey); line-height: 1.5; flex: 1; margin-bottom: 14px; }
   .game-tag {
-    display: inline-block;
-    background: var(--teal);
-    color: var(--gold);
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    align-self: flex-start;
+    display: inline-block; background: var(--teal); color: var(--gold); padding: 5px 14px;
+    border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; align-self: flex-start;
   }
   .play-link {
-    margin-top: 14px;
-    background: var(--gold);
-    color: var(--ink);
-    text-align: center;
-    padding: 12px;
-    border-radius: 25px;
-    font-weight: 800;
-    font-size: 15px;
+    margin-top: 12px; background: var(--gold); color: var(--ink); text-align: center;
+    padding: 11px; border-radius: 25px; font-weight: 800; font-size: 15px;
   }
-  .footer {
-    text-align: center;
-    color: var(--cream);
-    opacity: 0.7;
-    margin-top: 50px;
-    font-size: 13px;
-    line-height: 1.6;
-  }
+
+  .footer { text-align: center; color: var(--cream); opacity: 0.7; margin-top: 55px; font-size: 13px; line-height: 1.7; }
+  .footer a { color: var(--gold); text-decoration: none; }
   @media (max-width: 500px) {
     .hero h1 { font-size: 30px; }
     .games-grid { grid-template-columns: 1fr; }
+    .section-head h2 { font-size: 20px; }
   }
 </style>
 </head>
@@ -121,104 +81,185 @@
   <div class="container">
     <div class="hero">
       <h1>English &amp; Maths <span class="gold">Trainers</span></h1>
-      <p>Interactive listening, vocabulary and maths games. Tap, listen, and learn — works on any device, no download needed.</p>
+      <p>Interactive listening, vocabulary, grammar and maths games. Tap, listen, write and learn — works on any device, no download needed.</p>
+      <nav class="toc">
+        <a href="#chapter1">📘 Berlitz · Chapter 1</a>
+        <a href="#vocab">📚 Vocabulary &amp; Reading</a>
+        <a href="#maths">🔢 Maths</a>
+      </nav>
     </div>
 
-    <div class="games-grid">
+    <!-- ════════ BERLITZ CHAPTER 1 ════════ -->
+    <section class="section" id="chapter1">
+      <div class="section-head">
+        <h2>📘 Berlitz — Chapter 1</h2>
+        <span class="badge">Listen · Choose · Write</span>
+      </div>
+      <div class="section-sub">Meeting people, introductions, where you're from, grammar (be + possessives). Each card: listen &amp; choose ×10, then type it correctly to advance.</div>
+      <div class="section-rule"></div>
+      <div class="games-grid">
 
-      <a class="game-card" href="word-do.html">
-        <div class="game-icon">🔤</div>
-        <div class="game-title">Word: "do"</div>
-        <div class="game-desc">Listen to the word and tap the matching cell. Builds single-word recognition.</div>
-        <span class="game-tag">Vocabulary</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="introduce-yourself.html">
+          <div class="game-icon">🙋</div>
+          <div class="game-title">Introduce Yourself</div>
+          <div class="game-desc">20 question &amp; answer cards about you — name, age, country, hobbies. Listen, choose, then write.</div>
+          <span class="game-tag">Listen · Write · 20</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="question-sandwich.html">
-        <div class="game-icon">❓</div>
-        <div class="game-title">Question Match</div>
-        <div class="game-desc">Listen to "do you have a sandwich?" and pick the right question from look-alikes.</div>
-        <span class="game-tag">Listening</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="meeting-people.html">
+          <div class="game-icon">🤝</div>
+          <div class="game-title">Meeting People</div>
+          <div class="game-desc">"Pleased to meet you" introductions. Listen, choose, then type each sentence correctly. 10 cards.</div>
+          <span class="game-tag">Listen · Write · 10</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="build-sentence.html">
-        <div class="game-icon">🧩</div>
-        <div class="game-title">Build the Sentence</div>
-        <div class="game-desc">Listen, then arrange the word tiles in the correct order to build the sentence.</div>
-        <span class="game-tag">Grammar</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="where-from.html">
+          <div class="game-icon">🌍</div>
+          <div class="game-title">Where Are You From?</div>
+          <div class="game-desc">Countries, cities, nationalities, names &amp; phone numbers. 9 Q&amp;A cards.</div>
+          <span class="game-tag">Listen · Write · 9</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="book-topics.html">
-        <div class="game-icon">📚</div>
-        <div class="game-title">Book Topics</div>
-        <div class="game-desc">22 sentences "This book is about ___". Train your ear on the topic word at the end.</div>
-        <span class="game-tag">Vocabulary · 22</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="be-possessives.html">
+          <div class="game-icon">🔤</div>
+          <div class="game-title">Be + Possessives</div>
+          <div class="game-desc">Am/Is/Are questions &amp; possessives (my, your, his, her…). 10 Q&amp;A cards.</div>
+          <span class="game-tag">Grammar · Write · 10</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="length-units.html">
-        <div class="game-icon">📏</div>
-        <div class="game-title">Length Units</div>
-        <div class="game-desc">100 maths questions converting meters, centimeters and millimeters. 3 modes.</div>
-        <span class="game-tag">Maths · 100</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="subject-pronouns.html">
+          <div class="game-icon">🗣️</div>
+          <div class="game-title">Subject Pronouns</div>
+          <div class="game-desc">I, you, he, she, it, we, they — 35 simple sentences. Listen &amp; choose ×10, then write.</div>
+          <span class="game-tag">Grammar · Write · 35</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="berlits-qa.html">
-        <div class="game-icon">💬</div>
-        <div class="game-title">Berlitz Q&amp;A</div>
-        <div class="game-desc">Questions and answers listening practice in the Berlitz style.</div>
-        <span class="game-tag">Listening</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="family-tree-qa.html">
+          <div class="game-icon">👨‍👩‍👧‍👦</div>
+          <div class="game-title">Family Tree Q&amp;A</div>
+          <div class="game-desc">Who…? How many…? Is this…? — 50 family question &amp; answer cards.</div>
+          <span class="game-tag">Listening · 50</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="introduce-yourself.html">
-        <div class="game-icon">🙋</div>
-        <div class="game-title">Introduce Yourself</div>
-        <div class="game-desc">Listen to a question &amp; answer, then tap the matching cell. 20 Q&amp;A, each one practised 10 times.</div>
-        <span class="game-tag">Listening · 20 Q&amp;A</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="berlits-qa.html">
+          <div class="game-icon">💬</div>
+          <div class="game-title">Berlitz Q&amp;A</div>
+          <div class="game-desc">Questions and answers listening practice in the Berlitz style.</div>
+          <span class="game-tag">Listening</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="meeting-people.html">
-        <div class="game-icon">🤝</div>
-        <div class="game-title">Meeting People</div>
-        <div class="game-desc">Introductions from Berlitz Ch.1 — "Pleased to meet you". Listen, choose, then type each sentence correctly to advance. 10 cards.</div>
-        <span class="game-tag">Listen · Write · 10</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="question-sandwich.html">
+          <div class="game-icon">❓</div>
+          <div class="game-title">Question Match</div>
+          <div class="game-desc">Listen to "do you have a sandwich?" and pick the right question from look-alikes.</div>
+          <span class="game-tag">Listening</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-      <a class="game-card" href="subject-pronouns.html">
-        <div class="game-icon">🗣️</div>
-        <div class="game-title">Subject Pronouns</div>
-        <div class="game-desc">I, you, he, she, it, we, they — 35 simple sentences. Listen &amp; choose ×10, then write each one correctly to advance.</div>
-        <span class="game-tag">Grammar · Write · 35</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+      </div>
+    </section>
 
-      <a class="game-card" href="where-from.html">
-        <div class="game-icon">🌍</div>
-        <div class="game-title">Where Are You From?</div>
-        <div class="game-desc">Countries, cities, nationalities, names &amp; numbers (Berlitz Ch.1). Listen &amp; choose ×10, then write each Q&amp;A correctly. 9 cards.</div>
-        <span class="game-tag">Listen · Write · 9</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+    <!-- ════════ VOCABULARY & READING ════════ -->
+    <section class="section" id="vocab">
+      <div class="section-head">
+        <h2>📚 Vocabulary &amp; Reading</h2>
+        <span class="badge">Words · Sentences</span>
+      </div>
+      <div class="section-sub">Word recognition, sentence building and reading topics — including "Families Around the World".</div>
+      <div class="section-rule"></div>
+      <div class="games-grid">
 
-      <a class="game-card" href="be-possessives.html">
-        <div class="game-icon">🔤</div>
-        <div class="game-title">Be + Possessives</div>
-        <div class="game-desc">Am/Is/Are questions &amp; possessives (my, your, his, her…) from Berlitz Ch.1. Listen &amp; choose ×10, then write each Q&amp;A. 10 cards.</div>
-        <span class="game-tag">Grammar · Write · 10</span>
-        <div class="play-link">▶ Play</div>
-      </a>
+        <a class="game-card" href="families-page10-words.html">
+          <div class="game-icon">🌐</div>
+          <div class="game-title">Families: Words in Sentences</div>
+          <div class="game-desc">37 key words from "Families Around the World" (p.10), each in a short sentence.</div>
+          <span class="game-tag">Vocabulary · 37</span>
+          <div class="play-link">▶ Play</div>
+        </a>
 
-    </div>
+        <a class="game-card" href="families-page10-extra.html">
+          <div class="game-icon">➕</div>
+          <div class="game-title">Families: More Words</div>
+          <div class="game-desc">Extra words in sentences from the Families Around the World lesson.</div>
+          <span class="game-tag">Vocabulary</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+        <a class="game-card" href="key-words-families.html">
+          <div class="game-icon">🔑</div>
+          <div class="game-title">Families: Key Words</div>
+          <div class="game-desc">Core vocabulary from "Families Around the World" with Arabic meanings.</div>
+          <span class="game-tag">Vocabulary</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+        <a class="game-card" href="book-topics.html">
+          <div class="game-icon">📚</div>
+          <div class="game-title">Book Topics</div>
+          <div class="game-desc">22 sentences "This book is about ___". Train your ear on the topic word.</div>
+          <span class="game-tag">Vocabulary · 22</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+        <a class="game-card" href="book-predictions.html">
+          <div class="game-icon">🔮</div>
+          <div class="game-title">This Book Is About…</div>
+          <div class="game-desc">Predict and match what each book is about. Listening &amp; reading practice.</div>
+          <span class="game-tag">Reading</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+        <a class="game-card" href="word-do.html">
+          <div class="game-icon">🔤</div>
+          <div class="game-title">Word: "do"</div>
+          <div class="game-desc">Listen to the word and tap the matching cell. Builds single-word recognition.</div>
+          <span class="game-tag">Vocabulary</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+        <a class="game-card" href="build-sentence.html">
+          <div class="game-icon">🧩</div>
+          <div class="game-title">Build the Sentence</div>
+          <div class="game-desc">Listen, then arrange the word tiles in the correct order to build the sentence.</div>
+          <span class="game-tag">Grammar</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ════════ MATHS ════════ -->
+    <section class="section" id="maths">
+      <div class="section-head">
+        <h2>🔢 Maths</h2>
+        <span class="badge">Numbers</span>
+      </div>
+      <div class="section-sub">Number and measurement practice.</div>
+      <div class="section-rule"></div>
+      <div class="games-grid">
+
+        <a class="game-card" href="length-units.html">
+          <div class="game-icon">📏</div>
+          <div class="game-title">Length Units</div>
+          <div class="game-desc">100 maths questions converting meters, centimeters and millimeters. 3 modes.</div>
+          <span class="game-tag">Maths · 100</span>
+          <div class="play-link">▶ Play</div>
+        </a>
+
+      </div>
+    </section>
 
     <div class="footer">
       Interactive learning games · Built for English &amp; Maths practice<br>
-      Works offline · No login required · Optimised for phones and tablets
+      Works offline · No login required · Optimised for phones and tablets<br>
+      <a href="admin.html">Teacher dashboard →</a>
     </div>
   </div>
 </body>
