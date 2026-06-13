@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — English Trainers</title>
+<style>
+  :root{ --teal:#0E5E5C; --teal-deep:#083C3B; --gold:#D4AF37; --cream:#FAF7F2; --ink:#1A2E2D; --grey:#6E8282; --red:#C0392B; --green:#27AE60; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,var(--teal),var(--teal-deep));min-height:100vh;color:var(--ink);padding:18px;}
+  .wrap{max-width:1000px;margin:0 auto;}
+  h1{color:var(--cream);font-size:26px;font-weight:900;margin-bottom:4px;text-align:center;}
+  .sub{color:var(--cream);opacity:.8;text-align:center;font-size:13px;margin-bottom:18px;}
+  .card{background:var(--cream);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.2);margin-bottom:16px;}
+  label{display:block;font-size:13px;font-weight:700;color:var(--teal);margin:8px 0 4px;}
+  input,select,textarea{width:100%;padding:10px 12px;border:2px solid #ddd;border-radius:10px;font-family:inherit;font-size:14px;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .row>div{flex:1;min-width:120px;}
+  .btn{background:var(--teal);color:#fff;border:none;padding:10px 18px;border-radius:22px;cursor:pointer;font-size:14px;font-weight:800;transition:transform .15s,background .2s;}
+  .btn:hover{transform:translateY(-2px);background:var(--teal-deep);}
+  .btn.gold{background:var(--gold);color:var(--ink);}
+  .btn.red{background:var(--red);}
+  .btn.ghost{background:transparent;color:var(--teal);border:2px solid var(--teal);}
+  .btn.sm{padding:6px 12px;font-size:12px;border-radius:16px;}
+  .tabs{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
+  .tab{background:rgba(255,255,255,.15);color:var(--cream);border:1px solid rgba(212,175,55,.5);padding:9px 22px;border-radius:22px;cursor:pointer;font-weight:800;font-size:14px;}
+  .tab.active{background:var(--gold);color:var(--ink);}
+  .hidden{display:none!important;}
+  .msg{padding:10px 14px;border-radius:10px;margin:10px 0;font-weight:700;font-size:13px;display:none;}
+  .msg.ok{background:#EAF7EF;color:var(--green);display:block;}
+  .msg.err{background:#FBEAE8;color:var(--red);display:block;}
+  .msg.info{background:#FdF6E3;color:#8a6d00;display:block;}
+  .sec-title{color:var(--teal);font-weight:900;font-size:16px;margin:14px 0 8px;border-bottom:2px solid var(--gold);padding-bottom:4px;}
+  .tr-item{display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .tr-item .ic{font-size:22px;}
+  .tr-item .nm{flex:1;font-weight:700;color:var(--teal-deep);}
+  .tr-item .fl{font-size:11px;color:var(--grey);}
+  .muted{color:var(--grey);font-size:12px;}
+  table.cards{width:100%;border-collapse:collapse;margin-top:8px;}
+  table.cards th{font-size:11px;color:var(--grey);text-align:right;padding:4px;}
+  table.cards td{padding:3px;}
+  table.cards textarea{min-height:38px;resize:vertical;font-size:13px;}
+  table.cards .del{background:var(--red);color:#fff;border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-weight:800;}
+  .tokrow{display:flex;gap:8px;flex-wrap:wrap;align-items:end;}
+  .tokrow>div{flex:1;min-width:140px;}
+  iframe{width:100%;height:78vh;border:none;border-radius:12px;background:#fff;}
+  .pill{font-size:10px;background:var(--teal);color:var(--gold);padding:2px 8px;border-radius:10px;font-weight:800;}
+  code{background:#eee;padding:1px 5px;border-radius:5px;font-size:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🛠️ لوحة التحكم — English Trainers</h1>
+  <div class="sub">إضافة / تعديل / حذف التدريبات + متابعة نتائج الطلاب — النشر مباشرة على GitHub</div>
+
+  <!-- LOGIN -->
+  <div id="login" class="card">
+    <div class="sec-title">🔐 الدخول (GitHub Token)</div>
+    <p class="muted" style="margin-bottom:8px;line-height:1.6;">
+      التوكن بيتخزّن في متصفّحك فقط (localStorage) ومش بيتكتب في الكود. استخدم
+      <b>Fine-grained token</b> صلاحياته على ريبو <code>english-trainers</code> فقط، صلاحية
+      <b>Contents: Read and write</b>.
+    </p>
+    <div class="tokrow">
+      <div style="flex:2;"><label>GitHub Token</label><input id="tok" type="password" placeholder="github_pat_..."></div>
+      <div><label>Owner</label><input id="owner" value="arabicwherever"></div>
+      <div><label>Repo</label><input id="repo" value="english-trainers"></div>
+      <div><label>Branch</label><input id="branch" value="main"></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <button class="btn gold" onclick="login()">دخول / تحقّق</button>
+      <button class="btn ghost" onclick="clearTok()">مسح التوكن</button>
+    </div>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden">
+    <div class="tabs">
+      <button class="tab active" id="tabTrBtn" onclick="showTab('tr')">📚 التدريبات</button>
+      <button class="tab" id="tabReBtn" onclick="showTab('re')">📊 نتائج الطلاب</button>
+      <button class="btn ghost sm" style="align-self:center" onclick="clearTok()">خروج</button>
+    </div>
+
+    <!-- TRAINERS TAB -->
+    <div id="tabTr">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="sec-title" style="border:none;margin:0;">قائمة التدريبات</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn sm" onclick="loadList()">🔄 تحديث</button>
+            <button class="btn gold sm" onclick="newTrainer()">➕ تدريب جديد</button>
+          </div>
+        </div>
+        <div id="listMsg" class="msg"></div>
+        <div id="list"></div>
+      </div>
+
+      <!-- EDITOR -->
+      <div id="editor" class="card hidden">
+        <div class="sec-title" id="edTitle">تدريب جديد</div>
+        <div class="row">
+          <div><label>العنوان (Title)</label><input id="f_title" placeholder="مثال: Greetings"></div>
+          <div><label>اسم الملف (file)</label><input id="f_file" placeholder="greetings.html"></div>
+        </div>
+        <div class="row">
+          <div style="max-width:90px"><label>أيقونة</label><input id="f_icon" value="🎮"></div>
+          <div><label>القسم</label><select id="f_section"></select></div>
+          <div><label>النوع</label><select id="f_type" onchange="onTypeChange()">
+            <option value="write">اسمع + اختار + اكتب</option>
+            <option value="plain">اسمع + اختار فقط</option>
+          </select></div>
+        </div>
+        <div class="row">
+          <div><label>تكرار كل بطاقة</label><input id="f_reps" type="number" value="10" min="1"></div>
+          <div><label>الصحة (Health)</label><input id="f_health" type="number" value="50" min="1"></div>
+          <div><label>الوقت (دقائق)</label><input id="f_time" type="number" value="20" min="1"></div>
+          <div><label>عدد الخيارات</label><input id="f_cells" type="number" value="4" min="2" max="6"></div>
+        </div>
+        <div class="row">
+          <div><label>العنوان الفرعي (Subtitle)</label><input id="f_subtitle" value="EAALIM-STYLE TRAINER"></div>
+          <div style="max-width:230px"><label><input type="checkbox" id="f_say" style="width:auto" onchange="renderCards()"> نطق منفصل (فونيكس)</label>
+            <span class="muted">لو مفعّل، فيه عمود "Say" للنطق</span></div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;">
+          <label style="margin:0">البطاقات (Cards)</label>
+          <div style="display:flex;gap:6px;">
+            <button class="btn ghost sm" onclick="addRow()">➕ صف</button>
+            <button class="btn ghost sm" onclick="bulkOpen()">📋 لصق متعدد</button>
+          </div>
+        </div>
+        <div id="bulkBox" class="hidden" style="margin-top:8px;">
+          <p class="muted">سطر لكل بطاقة بصيغة: <code>English | الترجمة</code> (أو <code>English | الترجمة | Say</code>)</p>
+          <textarea id="bulk" rows="5" placeholder="Hello. | مرحبا&#10;Good morning. | صباح الخير"></textarea>
+          <button class="btn sm gold" style="margin-top:6px" onclick="bulkApply()">إضافة الأسطر</button>
+        </div>
+        <table class="cards"><thead><tr id="cardsHead"></tr></thead><tbody id="cardsBody"></tbody></table>
+
+        <div id="edMsg" class="msg"></div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn gold" onclick="saveTrainer()">💾 حفظ ونشر</button>
+          <button class="btn ghost" onclick="previewTrainer()">👁️ معاينة</button>
+          <button class="btn ghost" onclick="closeEditor()">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS TAB -->
+    <div id="tabRe" class="hidden">
+      <div class="card">
+        <div class="sec-title">📊 نتائج الطلاب (لوحة admin)</div>
+        <iframe id="reFrame" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let CFG = { tok:"", owner:"", repo:"", branch:"" };
+let REGISTRY = null, REGISTRY_SHA = null, TEMPLATE = null, EDIT_FILE = null;
+
+// ---------- base64 utf-8 ----------
+function b64dec(b64){ return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g,"")), c=>c.charCodeAt(0))); }
+function b64enc(str){ const by=new TextEncoder().encode(str); let s=""; by.forEach(b=>s+=String.fromCharCode(b)); return btoa(s); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function repAll(str, ph, val){ return str.split(ph).join(val); }
+
+// ---------- GitHub API ----------
+function apiBase(){ return `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/contents/`; }
+async function ghGet(path){
+  const r = await fetch(apiBase()+path+"?ref="+encodeURIComponent(CFG.branch)+"&t="+Date.now(),
+    { headers:{ "Authorization":"token "+CFG.tok, "Accept":"application/vnd.github+json" }});
+  if (r.status===404) return null;
+  if (!r.ok) throw new Error("GET "+path+" → "+r.status+" "+(await r.text()).slice(0,120));
+  const j = await r.json();
+  return { text: b64dec(j.content), sha: j.sha };
+}
+async function ghPut(path, text, message, sha){
+  const body = { message, content: b64enc(text), branch: CFG.branch };
+  if (sha) body.sha = sha;
+  const r = await fetch(apiBase()+path, { method:"PUT",
+    headers:{ "Authorization":"token "+CFG.tok, "Accept":"application/vnd.github+json" },
+    body: JSON.stringify(body) });
+  if (!r.ok) throw new Error("PUT "+path+" → "+r.status+" "+(await r.text()).slice(0,160));
+  return r.json();
+}
+async function ghDelete(path, message, sha){
+  const r = await fetch(apiBase()+path, { method:"DELETE",
+    headers:{ "Authorization":"token "+CFG.tok, "Accept":"application/vnd.github+json" },
+    body: JSON.stringify({ message, sha, branch: CFG.branch }) });
+  if (!r.ok) throw new Error("DELETE "+path+" → "+r.status+" "+(await r.text()).slice(0,160));
+  return r.json();
+}
+
+// ---------- login ----------
+function clearTok(){ localStorage.removeItem("gh_dash"); location.reload(); }
+async function login(){
+  CFG = { tok:$("tok").value.trim(), owner:$("owner").value.trim(), repo:$("repo").value.trim(), branch:$("branch").value.trim() };
+  const m=$("loginMsg");
+  if(!CFG.tok){ m.className="msg err"; m.textContent="من فضلك أدخل التوكن."; return; }
+  m.className="msg info"; m.textContent="جارٍ التحقّق…";
+  try{
+    const r = await fetch(`https://api.github.com/repos/${CFG.owner}/${CFG.repo}`,
+      { headers:{ "Authorization":"token "+CFG.tok, "Accept":"application/vnd.github+json" }});
+    if(!r.ok) throw new Error("التوكن أو الريبو غير صحيح ("+r.status+")");
+    localStorage.setItem("gh_dash", JSON.stringify(CFG));
+    $("login").classList.add("hidden"); $("app").classList.remove("hidden");
+    $("reFrame").src = "admin.html";
+    await loadList();
+  }catch(e){ m.className="msg err"; m.textContent="فشل: "+e.message; }
+}
+function showTab(t){
+  $("tabTr").classList.toggle("hidden", t!=="tr");
+  $("tabRe").classList.toggle("hidden", t!=="re");
+  $("tabTrBtn").classList.toggle("active", t==="tr");
+  $("tabReBtn").classList.toggle("active", t==="re");
+}
+
+// ---------- list ----------
+async function loadList(){
+  const m=$("listMsg"); m.className="msg info"; m.textContent="جارٍ التحميل…";
+  try{
+    const g = await ghGet("trainers.json");
+    REGISTRY = JSON.parse(g.text); REGISTRY_SHA = g.sha;
+    renderList(); m.className="msg"; m.textContent="";
+    // fill section dropdown
+    const sel=$("f_section"); sel.innerHTML="";
+    REGISTRY.sections.forEach(s=>{ const o=document.createElement("option"); o.value=s.id; o.textContent=s.title; sel.appendChild(o); });
+  }catch(e){ m.className="msg err"; m.textContent="فشل تحميل القائمة: "+e.message; }
+}
+function renderList(){
+  const wrap=$("list"); wrap.innerHTML="";
+  REGISTRY.sections.forEach(sec=>{
+    const items = REGISTRY.trainers.filter(t=>t.section===sec.id);
+    if(!items.length) return;
+    const h=document.createElement("div"); h.className="sec-title"; h.textContent=sec.title; wrap.appendChild(h);
+    items.forEach(t=>{
+      const d=document.createElement("div"); d.className="tr-item";
+      d.innerHTML = `<span class="ic">${t.icon||"🎮"}</span>
+        <div class="nm">${esc(t.title)} <span class="pill">${t.type==="write"?"اكتب":"اختار"}</span><div class="fl">${t.file}</div></div>`;
+      const open=document.createElement("a"); open.href=t.file; open.target="_blank"; open.className="btn ghost sm"; open.textContent="فتح";
+      d.appendChild(open);
+      if(t.editable!==false){ const ed=document.createElement("button"); ed.className="btn sm"; ed.textContent="تعديل"; ed.onclick=()=>editTrainer(t.file); d.appendChild(ed); }
+      const del=document.createElement("button"); del.className="btn red sm"; del.textContent="حذف"; del.onclick=()=>deleteTrainer(t.file); d.appendChild(del);
+      wrap.appendChild(d);
+    });
+  });
+}
+
+// ---------- editor state ----------
+let CARDS = [];
+function onTypeChange(){ /* nothing special; say checkbox independent */ }
+function renderCards(){
+  const say = $("f_say").checked;
+  $("cardsHead").innerHTML = `<th style="width:40px">#</th><th>English (تظهر وتُكتب)</th><th>الترجمة العربية</th>${say?'<th>Say (نطق)</th>':''}<th></th>`;
+  const tb=$("cardsBody"); tb.innerHTML="";
+  CARDS.forEach((c,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML = `<td class="muted">${i+1}</td>
+      <td><textarea oninput="CARDS[${i}].phrase=this.value">${esc(c.phrase||"")}</textarea></td>
+      <td><textarea oninput="CARDS[${i}].translation=this.value" dir="rtl">${esc(c.translation||"")}</textarea></td>
+      ${say?`<td><textarea oninput="CARDS[${i}].say=this.value">${esc(c.say||"")}</textarea></td>`:''}
+      <td><button class="del" onclick="CARDS.splice(${i},1);renderCards()">✕</button></td>`;
+    tb.appendChild(tr);
+  });
+}
+function addRow(){ CARDS.push({phrase:"",translation:"",say:""}); renderCards(); }
+function bulkOpen(){ $("bulkBox").classList.toggle("hidden"); }
+function bulkApply(){
+  const lines=$("bulk").value.split("\n").map(l=>l.trim()).filter(Boolean);
+  lines.forEach(l=>{ const p=l.split("|").map(x=>x.trim()); if(p[0]) CARDS.push({phrase:p[0],translation:p[1]||"",say:p[2]||""}); });
+  $("bulk").value=""; $("bulkBox").classList.add("hidden"); renderCards();
+}
+function newTrainer(){
+  EDIT_FILE=null; $("edTitle").textContent="➕ تدريب جديد";
+  $("f_title").value=""; $("f_file").value=""; $("f_icon").value="🎮";
+  $("f_type").value="write"; $("f_reps").value=10; $("f_health").value=50; $("f_time").value=20; $("f_cells").value=4;
+  $("f_subtitle").value="EAALIM-STYLE TRAINER"; $("f_say").checked=false;
+  $("f_file").disabled=false;
+  CARDS=[{phrase:"",translation:"",say:""}]; renderCards();
+  $("edMsg").className="msg"; $("edMsg").textContent="";
+  $("editor").classList.remove("hidden"); $("editor").scrollIntoView({behavior:"smooth"});
+}
+function closeEditor(){ $("editor").classList.add("hidden"); }
+
+async function editTrainer(file){
+  const m=$("listMsg"); m.className="msg info"; m.textContent="جارٍ فتح "+file+"…";
+  try{
+    const g = await ghGet(file); if(!g) throw new Error("الملف غير موجود");
+    const html=g.text;
+    const meta = REGISTRY.trainers.find(t=>t.file===file)||{};
+    // extract FOCUSED
+    const fm = html.match(/const FOCUSED\s*=\s*(\[[\s\S]*?\]);/);
+    let cards=[];
+    if(fm){ try{ cards = (new Function("return ("+fm[1]+")"))(); }catch(e){ throw new Error("تعذّر قراءة البطاقات: "+e.message); } }
+    CARDS = cards.map(c=>({phrase:c.phrase||c.word||"", translation:c.translation||"", say:c.say||""}));
+    const hasSay = cards.some(c=>c.say);
+    // settings
+    const num=(re,def)=>{ const x=html.match(re); return x?parseInt(x[1]):def; };
+    const reps = num(/ROUNDS_PER_FOCUSED\s*=\s*([0-9]+)/, num(/REPEAT_PER_[A-Z]+\s*=\s*([0-9]+)/,10));
+    const health = num(/START_HEALTH\s*=\s*([0-9]+)/,50);
+    const timeSec = num(/TIME_LIMIT\s*=\s*([0-9]+)/,1200);
+    const cells = num(/CELLS_COUNT\s*=\s*([0-9]+)/,4);
+    const h1 = (html.match(/<h1>([\s\S]*?)<\/h1>/)||[])[1] || meta.title || file;
+    const sub = (html.match(/class="subtitle">([\s\S]*?)<\/div>/)||[])[1] || "EAALIM-STYLE TRAINER";
+    EDIT_FILE=file; $("edTitle").textContent="✏️ تعديل: "+file;
+    $("f_title").value = meta.title || h1.replace(/&amp;/g,"&");
+    $("f_file").value = file; $("f_file").disabled = true;
+    $("f_icon").value = meta.icon || "🎮";
+    $("f_type").value = (meta.type) || (/HAS_WRITE\s*=\s*true|id="write-panel"/.test(html)?"write":"plain");
+    $("f_reps").value=reps; $("f_health").value=health; $("f_time").value=Math.round(timeSec/60); $("f_cells").value=cells;
+    $("f_subtitle").value = sub.replace(/&amp;/g,"&");
+    $("f_say").checked = hasSay;
+    // section dropdown set
+    if(meta.section) $("f_section").value=meta.section;
+    renderCards();
+    $("edMsg").className="msg"; $("edMsg").textContent="";
+    $("editor").classList.remove("hidden"); $("editor").scrollIntoView({behavior:"smooth"});
+    m.className="msg"; m.textContent="";
+  }catch(e){ m.className="msg err"; m.textContent="فشل الفتح: "+e.message; }
+}
+
+// ---------- build trainer html ----------
+function slugify(s){ return s.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40) || "trainer"; }
+function collectForm(){
+  const title=$("f_title").value.trim();
+  let file=$("f_file").value.trim();
+  if(!file){ file=slugify(title)+".html"; $("f_file").value=file; }
+  if(!/\.html$/.test(file)) file+=".html";
+  const type=$("f_type").value, say=$("f_say").checked;
+  const reps=+$("f_reps").value||10, health=+$("f_health").value||50, mins=+$("f_time").value||20, cells=+$("f_cells").value||4;
+  const cards=CARDS.filter(c=>(c.phrase||"").trim()).map(c=>({phrase:c.phrase.trim(), translation:(c.translation||"").trim(), say:say?(c.say||"").trim():""}));
+  return { title, file, icon:$("f_icon").value.trim()||"🎮", section:$("f_section").value, type, say,
+           reps, health, timeSec:mins*60, cells, subtitle:$("f_subtitle").value.trim()||"EAALIM-STYLE TRAINER", cards };
+}
+function dataLiteral(cards){
+  return "[\n" + cards.map(c=>{
+    let s = "  { phrase: "+JSON.stringify(c.phrase)+", translation: "+JSON.stringify(c.translation);
+    if(c.say) s += ", say: "+JSON.stringify(c.say);
+    return s+" }";
+  }).join(",\n") + "\n]";
+}
+function fmtTime(sec){ return Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0"); }
+function buildHtml(f){
+  const write = f.type==="write";
+  const startH2 = write ? "Listen, choose, then write" : "Listen and choose";
+  const startP = `Listen &amp; tap the matching card <strong id="t-reps">${f.reps}</strong> times,<br>`
+    + (write ? `then <strong>type it correctly</strong> to unlock the next card.<br>` : ``)
+    + `Target: <strong id="t-target">${f.cards.length*f.reps}</strong> correct · Health: <strong id="t-health">${f.health}</strong> · Time: <strong id="t-time">${fmtTime(f.timeSec)}</strong>.`;
+  let h = TEMPLATE;
+  h = repAll(h,"__TITLE__", esc(f.title)+" | Eaalim Style");
+  h = repAll(h,"__H1__", esc(f.title));
+  h = repAll(h,"__SUBTITLE__", esc(f.subtitle));
+  h = repAll(h,"__START_H2__", startH2);
+  h = repAll(h,"__START_P_HTML__", startP);
+  h = repAll(h,"__LEVEL_INFO__", f.cards.length+" cards");
+  h = repAll(h,"__PREVIEW_H3__", f.icon+" Cards in this lesson");
+  h = repAll(h,"__END_NOTE__", esc(f.title));
+  h = repAll(h,"__FOOTER__", "Inspired by the Eaalim Tables Game · "+esc(f.title));
+  h = repAll(h,"__HAS_WRITE__", write?"true":"false");
+  h = repAll(h,"__REPEAT__", f.reps);
+  h = repAll(h,"__HEALTH__", f.health);
+  h = repAll(h,"__TIME__", f.timeSec);
+  h = repAll(h,"__CELLS__", f.cells);
+  h = repAll(h,"__DATA__", dataLiteral(f.cards));
+  return h;
+}
+
+// ---------- index card upsert/remove ----------
+function reEsc(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }
+function cardBlock(f){
+  const tag = f.type==="write" ? `Listen · Write · ${f.cards.length}` : `Listening · ${f.cards.length}`;
+  const desc = `${f.cards.length} cards — listen &amp; choose${f.type==="write"?", then write":""}.`;
+  return `      <a class="game-card" href="${f.file}">\n`
+    + `        <div class="game-icon">${f.icon}</div>\n`
+    + `        <div class="game-title">${esc(f.title)}</div>\n`
+    + `        <div class="game-desc">${desc}</div>\n`
+    + `        <span class="game-tag">${tag}</span>\n`
+    + `        <div class="play-link">▶ Play</div>\n`
+    + `      </a>`;
+}
+function removeCardFromIndex(html, file){
+  const re = new RegExp("\\s*<a class=\"game-card\" href=\""+reEsc(file)+"\">[\\s\\S]*?<\\/a>");
+  return html.replace(re,"");
+}
+function upsertCardInIndex(html, f){
+  const re = new RegExp("\\s*<a class=\"game-card\" href=\""+reEsc(f.file)+"\">[\\s\\S]*?<\\/a>");
+  if(re.test(html)) return html.replace(re, "\n\n"+cardBlock(f));
+  const secIdx = html.indexOf('id="'+f.section+'"');
+  if(secIdx<0) return html;
+  const secEnd = html.indexOf("</section>", secIdx);
+  const close = html.lastIndexOf("</div>", secEnd);   // games-grid closer
+  return html.slice(0,close) + cardBlock(f) + "\n\n      " + html.slice(close);
+}
+
+// ---------- preview ----------
+async function previewTrainer(){
+  if(!TEMPLATE){ const g=await ghGet("_template.html"); TEMPLATE=g.text; }
+  const f=collectForm();
+  if(!f.cards.length){ $("edMsg").className="msg err"; $("edMsg").textContent="أضف بطاقة واحدة على الأقل."; return; }
+  const blob=new Blob([buildHtml(f)],{type:"text/html"}); window.open(URL.createObjectURL(blob),"_blank");
+}
+
+// ---------- save ----------
+async function saveTrainer(){
+  const m=$("edMsg");
+  try{
+    if(!TEMPLATE){ const g=await ghGet("_template.html"); TEMPLATE=g.text; }
+    const f=collectForm();
+    if(!f.title){ throw new Error("اكتب عنوان التدريب."); }
+    if(!f.cards.length){ throw new Error("أضف بطاقة واحدة على الأقل."); }
+    m.className="msg info"; m.textContent="جارٍ النشر… (1/3 ملف التدريب)";
+    // 1) trainer html
+    const existing = await ghGet(f.file);
+    await ghPut(f.file, buildHtml(f), (existing?"Update":"Add")+" trainer "+f.file+" via dashboard", existing?existing.sha:null);
+    // 2) trainers.json
+    m.textContent="جارٍ النشر… (2/3 السجل)";
+    const idx = REGISTRY.trainers.findIndex(t=>t.file===f.file);
+    const entry={ file:f.file, title:f.title, icon:f.icon, section:f.section, type:f.type, editable:true };
+    if(idx>=0) REGISTRY.trainers[idx]=entry; else REGISTRY.trainers.push(entry);
+    const rj = await ghGet("trainers.json"); REGISTRY_SHA=rj.sha;
+    await ghPut("trainers.json", JSON.stringify(REGISTRY,null,2)+"\n", "Update registry: "+f.file, REGISTRY_SHA);
+    // 3) index.html
+    m.textContent="جارٍ النشر… (3/3 الصفحة الرئيسية)";
+    const ix = await ghGet("index.html");
+    const newIx = upsertCardInIndex(ix.text, f);
+    if(newIx!==ix.text) await ghPut("index.html", newIx, "Index card for "+f.file, ix.sha);
+    m.className="msg ok"; m.textContent="✅ تم النشر! GitHub Pages بياخد دقيقة عشان يحدّث.";
+    await loadList();
+  }catch(e){ m.className="msg err"; m.textContent="فشل: "+e.message; }
+}
+
+// ---------- delete ----------
+async function deleteTrainer(file){
+  if(!confirm("متأكد تحذف "+file+"؟ هيتشال الملف من الموقع.")) return;
+  const m=$("listMsg");
+  try{
+    m.className="msg info"; m.textContent="جارٍ الحذف…";
+    const g=await ghGet(file); if(g) await ghDelete(file, "Delete trainer "+file+" via dashboard", g.sha);
+    // registry
+    REGISTRY.trainers = REGISTRY.trainers.filter(t=>t.file!==file);
+    const rj=await ghGet("trainers.json");
+    await ghPut("trainers.json", JSON.stringify(REGISTRY,null,2)+"\n", "Remove "+file+" from registry", rj.sha);
+    // index
+    const ix=await ghGet("index.html");
+    const newIx=removeCardFromIndex(ix.text, file);
+    if(newIx!==ix.text) await ghPut("index.html", newIx, "Remove index card "+file, ix.sha);
+    m.className="msg ok"; m.textContent="🗑️ تم الحذف.";
+    renderList();
+  }catch(e){ m.className="msg err"; m.textContent="فشل الحذف: "+e.message; }
+}
+
+// ---------- boot ----------
+(function(){
+  const saved=localStorage.getItem("gh_dash");
+  if(saved){ try{ const c=JSON.parse(saved); $("tok").value=c.tok; $("owner").value=c.owner; $("repo").value=c.repo; $("branch").value=c.branch||"main"; }catch(e){} }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "sections": [
+    { "id": "chapter1", "title": "📘 Berlitz — Chapter 1" },
+    { "id": "vocab", "title": "📚 Vocabulary & Reading" },
+    { "id": "maths", "title": "🔢 Maths" }
+  ],
+  "trainers": [
+    { "file": "introduce-yourself.html", "title": "Introduce Yourself", "icon": "🙋", "section": "chapter1", "type": "write", "editable": true },
+    { "file": "meeting-people.html", "title": "Meeting People", "icon": "🤝", "section": "chapter1", "type": "write", "editable": true },
+    { "file": "where-from.html", "title": "Where Are You From?", "icon": "🌍", "section": "chapter1", "type": "write", "editable": true },
+    { "file": "be-possessives.html", "title": "Be + Possessives", "icon": "🔤", "section": "chapter1", "type": "write", "editable": true },
+    { "file": "subject-pronouns.html", "title": "Subject Pronouns", "icon": "🗣️", "section": "chapter1", "type": "write", "editable": true },
+    { "file": "family-tree-qa.html", "title": "Family Tree Q&A", "icon": "👨‍👩‍👧‍👦", "section": "chapter1", "type": "plain", "editable": true },
+    { "file": "berlits-qa.html", "title": "Berlitz Q&A", "icon": "💬", "section": "chapter1", "type": "plain", "editable": true },
+    { "file": "question-sandwich.html", "title": "Question Match", "icon": "❓", "section": "chapter1", "type": "plain", "editable": false },
+    { "file": "desert-adaptations.html", "title": "Desert Animal Adaptations", "icon": "🦎", "section": "vocab", "type": "write", "editable": true },
+    { "file": "phonics.html", "title": "Phonics A–Z", "icon": "🔤", "section": "vocab", "type": "plain", "editable": true },
+    { "file": "families-page10-words.html", "title": "Families: Words in Sentences", "icon": "🌐", "section": "vocab", "type": "plain", "editable": true },
+    { "file": "families-page10-extra.html", "title": "Families: More Words", "icon": "➕", "section": "vocab", "type": "plain", "editable": true },
+    { "file": "key-words-families.html", "title": "Families: Key Words", "icon": "🔑", "section": "vocab", "type": "plain", "editable": true },
+    { "file": "book-topics.html", "title": "Book Topics", "icon": "📚", "section": "vocab", "type": "plain", "editable": true },
+    { "file": "book-predictions.html", "title": "This Book Is About…", "icon": "🔮", "section": "vocab", "type": "plain", "editable": true },
+    { "file": "word-do.html", "title": "Word: \"do\"", "icon": "🔤", "section": "vocab", "type": "plain", "editable": false },
+    { "file": "build-sentence.html", "title": "Build the Sentence", "icon": "🧩", "section": "vocab", "type": "plain", "editable": false },
+    { "file": "length-units.html", "title": "Length Units", "icon": "📏", "section": "maths", "type": "plain", "editable": false }
+  ]
+}
