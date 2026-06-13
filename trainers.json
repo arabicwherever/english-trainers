@@ -344,6 +344,14 @@
       "editable": true
     },
     {
+      "file": "triple-multiplication-hard.html",
+      "title": "Triple Multiplication — Harder",
+      "icon": "🔥",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
       "file": "length-units.html",
       "title": "Length Units",
       "icon": "📏",
