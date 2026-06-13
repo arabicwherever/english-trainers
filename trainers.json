@@ -248,6 +248,94 @@
       "editable": true
     },
     {
+      "file": "times-answer-2.html",
+      "title": "Pick the Answer — 2×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-3.html",
+      "title": "Pick the Answer — 3×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-4.html",
+      "title": "Pick the Answer — 4×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-5.html",
+      "title": "Pick the Answer — 5×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-6.html",
+      "title": "Pick the Answer — 6×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-7.html",
+      "title": "Pick the Answer — 7×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-8.html",
+      "title": "Pick the Answer — 8×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-9.html",
+      "title": "Pick the Answer — 9×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-10.html",
+      "title": "Pick the Answer — 10×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-11.html",
+      "title": "Pick the Answer — 11×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
+      "file": "times-answer-12.html",
+      "title": "Pick the Answer — 12×",
+      "icon": "🟰",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
       "file": "length-units.html",
       "title": "Length Units",
       "icon": "📏",
