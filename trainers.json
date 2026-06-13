@@ -15,6 +15,7 @@
     { "file": "berlits-qa.html", "title": "Berlitz Q&A", "icon": "💬", "section": "chapter1", "type": "plain", "editable": true },
     { "file": "question-sandwich.html", "title": "Question Match", "icon": "❓", "section": "chapter1", "type": "plain", "editable": false },
     { "file": "desert-adaptations.html", "title": "Desert Animal Adaptations", "icon": "🦎", "section": "vocab", "type": "write", "editable": true },
+    { "file": "together.html", "title": "Doing Things Together", "icon": "🧑‍🤝‍🧑", "section": "vocab", "type": "write", "editable": true },
     { "file": "phonics.html", "title": "Phonics A–Z", "icon": "🔤", "section": "vocab", "type": "plain", "editable": true },
     { "file": "families-page10-words.html", "title": "Families: Words in Sentences", "icon": "🌐", "section": "vocab", "type": "plain", "editable": true },
     { "file": "families-page10-extra.html", "title": "Families: More Words", "icon": "➕", "section": "vocab", "type": "plain", "editable": true },
