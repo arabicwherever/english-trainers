@@ -336,6 +336,14 @@
       "editable": true
     },
     {
+      "file": "triple-multiplication.html",
+      "title": "Triple Multiplication",
+      "icon": "🧮",
+      "section": "maths",
+      "type": "plain",
+      "editable": true
+    },
+    {
       "file": "length-units.html",
       "title": "Length Units",
       "icon": "📏",
