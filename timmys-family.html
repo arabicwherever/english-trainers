@@ -331,8 +331,8 @@
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen, choose, then write</h2>
-      <div class="level-info" id="level-info">11 Q&amp;A</div>
-      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">44</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">11:00</strong>.</p>
+      <div class="level-info" id="level-info">16 Q&amp;A</div>
+      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">64</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">32:00</strong>.</p>
       <div class="phrases-preview">
         <h3>🐯 Questions in this story</h3>
         <ol id="phrases-list"></ol>
@@ -409,24 +409,29 @@
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · Tamer's Family — reading comprehension (Q&amp;A)
+      Inspired by the Eaalim Tables Game · Tamer's Family — reading (Q&amp;A)
     </div>
   </div>
 
 <script>
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
-  { phrase: "Is Tamer at home? — No, he is not at home.", translation: "هل تامر في البيت؟ — لا، هو ليس في البيت." },
-  { phrase: "Where is Tamer? — He is at his aunt and uncle's house.", translation: "أين تامر؟ — في بيت عمّه وعمّته." },
-  { phrase: "Who is also there? — Grandma is also there.", translation: "من أيضًا هناك؟ — الجدّة هناك أيضًا." },
-  { phrase: "Where are Tamer's mother and father? — They are on vacation.", translation: "أين والدا تامر؟ — هما في إجازة." },
-  { phrase: "Where are Tamer's brother and sister? — They are on vacation, too.", translation: "أين أخوه وأخته؟ — هما في إجازة أيضًا." },
-  { phrase: "What time is it? — It is bedtime.", translation: "كم الوقت؟ — إنه وقت النوم." },
-  { phrase: "What is Tamer in bed with? — His toy tiger.", translation: "مع ماذا تامر في الفراش؟ — مع نمره اللعبة." },
-  { phrase: "What is Tamer wearing? — His favorite pajamas.", translation: "ماذا يرتدي تامر؟ — بيجامته المفضلة." },
-  { phrase: "Is Tamer happy? — No, he is not happy.", translation: "هل تامر سعيد؟ — لا، هو ليس سعيدًا." },
-  { phrase: "Can Tamer sleep? — No, he can't sleep.", translation: "هل يستطيع تامر النوم؟ — لا، لا يستطيع النوم." },
-  { phrase: "What can Tamer do to sleep well? — He can read a story.", translation: "ماذا يفعل تامر لينام جيدًا؟ — يمكنه قراءة قصة." }
+  { phrase: "Is Tamer at home? — No, he is not.", translation: "هل تامر في البيت؟ — لا." },
+  { phrase: "Where is Tamer? — At his aunt and uncle's house.", translation: "أين تامر؟ — في بيت عمّه." },
+  { phrase: "Who is also there? — Grandma.", translation: "من أيضًا هناك؟ — الجدّة." },
+  { phrase: "Where are his mom and dad? — On vacation.", translation: "أين أمه وأبوه؟ — في إجازة." },
+  { phrase: "Where are his brother and sister? — On vacation, too.", translation: "أين أخوه وأخته؟ — في إجازة أيضًا." },
+  { phrase: "What time is it? — It is bedtime.", translation: "كم الوقت؟ — وقت النوم." },
+  { phrase: "What is in bed with Tamer? — His toy tiger.", translation: "ما الذي معه في الفراش؟ — نمره اللعبة." },
+  { phrase: "What is Tamer wearing? — His pajamas.", translation: "ماذا يرتدي تامر؟ — بيجامته." },
+  { phrase: "Is Tamer happy? — No, he is not.", translation: "هل تامر سعيد؟ — لا." },
+  { phrase: "Can Tamer sleep? — No, he can't.", translation: "هل يستطيع النوم؟ — لا." },
+  { phrase: "Who asks 'Are you OK?' — Uncle Sami.", translation: "من يسأل: هل أنت بخير؟ — عمّه سامي." },
+  { phrase: "Why is Tamer sad? — He misses his family.", translation: "لماذا تامر حزين؟ — يفتقد عائلته." },
+  { phrase: "Who does Tamer miss? — His mom and dad.", translation: "من يفتقد؟ — أمه وأباه." },
+  { phrase: "What is Grandma's idea? — Some warm milk.", translation: "ما فكرة الجدّة؟ — حليب دافئ." },
+  { phrase: "Does the warm milk help? — No, he can't sleep.", translation: "هل ساعده الحليب؟ — لا." },
+  { phrase: "What can Tamer do to sleep? — He can read a story.", translation: "ماذا يفعل لينام؟ — يقرأ قصة." }
 ];
 
 // Distractors come from the other cards.
@@ -435,7 +440,7 @@ const BACKUP = [];
 const REPEAT_PER_CARD = 4;                          // each card 10 times
 const WIN_TARGET = FOCUSED.length * REPEAT_PER_CARD; // 20 × 10 = 200
 const START_HEALTH = 20;
-const TIME_LIMIT = 660;     // 25:00
+const TIME_LIMIT = 1920;     // 25:00
 const CELLS_COUNT = 4;
 const HAS_WRITE = true;
 const ROUNDS_PER_FOCUSED = REPEAT_PER_CARD;          // 10
