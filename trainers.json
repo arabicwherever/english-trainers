@@ -136,6 +136,14 @@
       "editable": true
     },
     {
+      "file": "reading-settings.html",
+      "title": "Reading — Story Settings",
+      "icon": "🏡",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "capital-letters.html",
       "title": "Writing — Capital Letters",
       "icon": "🔠",
