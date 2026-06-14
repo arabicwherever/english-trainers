@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ready to Read — Family &amp; Bedtime | Eaalim Style</title>
+<title>Ready to Read — Family &amp; Bedtime (Q&amp;A) | Eaalim Style</title>
 <style>
   :root {
     --teal: #0E5E5C;
@@ -325,16 +325,16 @@
   <div class="game-container">
     <div class="header">
       <h1>Ready to Read — Family &amp; Bedtime 🛏️</h1>
-      <div class="subtitle">EAALIM-STYLE TRAINER · UNIT 1B · AUNT · UNCLE · COUSIN · BEDTIME</div>
+      <div class="subtitle">EAALIM-STYLE TRAINER · UNIT 1B · QUESTIONS &amp; ANSWERS</div>
     </div>
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen, choose, then write</h2>
-      <div class="level-info" id="level-info">14 cards</div>
-      <p>Listen &amp; tap the matching card <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">56</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">12:00</strong>.</p>
+      <div class="level-info" id="level-info">13 Q&amp;A</div>
+      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">52</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">12:00</strong>.</p>
       <div class="phrases-preview">
-        <h3>🛏️ Cards in this lesson</h3>
+        <h3>🛏️ Questions in this lesson</h3>
         <ol id="phrases-list"></ol>
       </div>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
@@ -402,33 +402,32 @@
         <div class="ar">— ما شاء الله —</div>
         <div class="en">Congratulations!</div>
         <div class="score-display" id="final-score">0%</div>
-        <p style="color: var(--grey);">Ready to Read · Family &amp; bedtime</p>
+        <p style="color: var(--grey);">Ready to Read · Family &amp; bedtime (Q&amp;A)</p>
       </div>
       <br>
       <button class="start-btn" onclick="location.reload()">Play Again</button>
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · Unit 1B — family &amp; bedtime
+      Inspired by the Eaalim Tables Game · Unit 1B — family &amp; bedtime (Q&amp;A)
     </div>
   </div>
 
 <script>
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
-  { phrase: "aunt", translation: "عمّة" },
-  { phrase: "uncle", translation: "عمّ" },
-  { phrase: "cousin", translation: "ابن العم" },
-  { phrase: "bedtime", translation: "وقت النوم" },
-  { phrase: "pajamas", translation: "بيجامة" },
-  { phrase: "sleep", translation: "يَنام" },
-  { phrase: "Farid is my uncle. He is my father's brother.", translation: "فريد عمّي. هو أخو أبي." },
-  { phrase: "Aysha is my aunt.", translation: "عائشة عمّتي." },
-  { phrase: "My cousins are Emir and Rashid.", translation: "أبناء عمّي هم أمير وراشد." },
-  { phrase: "Emir is twelve years old. Rashid is seven years old.", translation: "أمير عمره اثنا عشر عامًا. راشد عمره سبع سنوات." },
-  { phrase: "My cousins go to sleep at 8:30.", translation: "أبناء عمّي ينامون الساعة 8:30." },
-  { phrase: "They put on their pajamas and go to bed.", translation: "يرتدون بيجاماتهم ويذهبون إلى الفراش." },
-  { phrase: "Every night at bedtime, my uncle tells them a story.", translation: "كل ليلة وقت النوم، يحكي لهم عمّي قصة." },
+  { phrase: "What do you call your father's brother? — He is my uncle.", translation: "ماذا تسمّي أخا أبيك؟ — هو عمّي." },
+  { phrase: "What do you call your father's sister? — She is my aunt.", translation: "ماذا تسمّي أخت أبيك؟ — هي عمّتي." },
+  { phrase: "Who is your uncle's son? — He is my cousin.", translation: "من ابن عمّك؟ — هو ابن عمّي." },
+  { phrase: "When do you go to bed? — At bedtime.", translation: "متى تذهب إلى الفراش؟ — وقت النوم." },
+  { phrase: "What do you wear in bed? — My pajamas.", translation: "ماذا ترتدي في الفراش؟ — بيجامتي." },
+  { phrase: "What do you do at night? — I sleep.", translation: "ماذا تفعل في الليل؟ — أنام." },
+  { phrase: "Is Farid your uncle? — Yes, he is my father's brother.", translation: "هل فريد عمّك؟ — نعم، هو أخو أبي." },
+  { phrase: "Is Aysha your aunt? — Yes, she is.", translation: "هل عائشة عمّتك؟ — نعم، هي كذلك." },
+  { phrase: "Who are your cousins? — Emir and Rashid.", translation: "من أبناء عمّك؟ — أمير وراشد." },
+  { phrase: "How old is Rashid? — He is seven years old.", translation: "كم عمر راشد؟ — سبع سنوات." },
+  { phrase: "When do your cousins sleep? — At 8:30.", translation: "متى ينام أبناء عمّك؟ — الساعة 8:30." },
+  { phrase: "Who tells them a story at bedtime? — Their uncle.", translation: "من يحكي لهم قصة وقت النوم؟ — عمّهم." },
   { phrase: "How many cousins do you have? — I have three cousins.", translation: "كم ابن عمٍّ لديك؟ — لديّ ثلاثة أبناء عم." }
 ];
 

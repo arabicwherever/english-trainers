@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oracy — Group Rules &amp; Family | Eaalim Style</title>
+<title>Oracy — Group Rules &amp; Family (Q&amp;A) | Eaalim Style</title>
 <style>
   :root {
     --teal: #0E5E5C;
@@ -325,16 +325,16 @@
   <div class="game-container">
     <div class="header">
       <h1>Oracy — Group Rules &amp; Family 👪</h1>
-      <div class="subtitle">EAALIM-STYLE TRAINER · GROUND RULES &amp; FAMILY · LISTEN, CHOOSE &amp; WRITE</div>
+      <div class="subtitle">EAALIM-STYLE TRAINER · GROUND RULES &amp; FAMILY · Q&amp;A</div>
     </div>
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen, choose, then write</h2>
-      <div class="level-info" id="level-info">12 sentences</div>
-      <p>Listen &amp; tap the matching sentence <strong id="t-reps">5</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">60</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">10:00</strong>.</p>
+      <div class="level-info" id="level-info">12 Q&amp;A</div>
+      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">48</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">12:00</strong>.</p>
       <div class="phrases-preview">
-        <h3>👪 Sentences in this lesson</h3>
+        <h3>👪 Questions in this lesson</h3>
         <ol id="phrases-list"></ol>
       </div>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
@@ -402,41 +402,41 @@
         <div class="ar">— ما شاء الله —</div>
         <div class="en">Congratulations!</div>
         <div class="score-display" id="final-score">0%</div>
-        <p style="color: var(--grey);">Oracy · Group rules &amp; family</p>
+        <p style="color: var(--grey);">Oracy · Group rules &amp; family (Q&amp;A)</p>
       </div>
       <br>
       <button class="start-btn" onclick="location.reload()">Play Again</button>
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · Oracy — ground rules &amp; family members
+      Inspired by the Eaalim Tables Game · Oracy — ground rules &amp; family (Q&amp;A)
     </div>
   </div>
 
 <script>
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
-  { phrase: "We listen to each other.", translation: "نستمع لبعضنا." },
-  { phrase: "We respect each other.", translation: "نحترم بعضنا." },
-  { phrase: "We take turns.", translation: "نتناوب في الأدوار." },
-  { phrase: "We help each other.", translation: "نساعد بعضنا." },
-  { phrase: "We share our things.", translation: "نتشارك أشياءنا." },
-  { phrase: "This is my brother.", translation: "هذا أخي." },
-  { phrase: "This is my sister.", translation: "هذه أختي." },
-  { phrase: "This is my father.", translation: "هذا أبي." },
-  { phrase: "This is my mother.", translation: "هذه أمي." },
-  { phrase: "This is my grandfather.", translation: "هذا جدّي." },
-  { phrase: "This is my grandmother.", translation: "هذه جدّتي." },
-  { phrase: "This is our family tree.", translation: "هذه شجرة عائلتنا." }
+  { phrase: "What do we do in groups? — We listen to each other.", translation: "ماذا نفعل في المجموعات؟ — نستمع لبعضنا." },
+  { phrase: "How do we work together? — We respect each other.", translation: "كيف نعمل معًا؟ — نحترم بعضنا." },
+  { phrase: "What do we do when we play? — We take turns.", translation: "ماذا نفعل عند اللعب؟ — نتناوب في الأدوار." },
+  { phrase: "What do we do for our friends? — We help each other.", translation: "ماذا نفعل لأصدقائنا؟ — نساعد بعضنا." },
+  { phrase: "What do we do with our things? — We share them.", translation: "ماذا نفعل بأشيائنا؟ — نتشاركها." },
+  { phrase: "Who is the boy in your family? — He is my brother.", translation: "من الولد في عائلتك؟ — هو أخي." },
+  { phrase: "Who is the girl in your family? — She is my sister.", translation: "من البنت في عائلتك؟ — هي أختي." },
+  { phrase: "Who is your mother's husband? — He is my father.", translation: "من زوج أمّك؟ — هو أبي." },
+  { phrase: "Who is your father's wife? — She is my mother.", translation: "من زوجة أبيك؟ — هي أمي." },
+  { phrase: "Who is your father's father? — He is my grandfather.", translation: "من أبو أبيك؟ — هو جدّي." },
+  { phrase: "Who is your mother's mother? — She is my grandmother.", translation: "من أمّ أمّك؟ — هي جدّتي." },
+  { phrase: "What is this? — This is our family tree.", translation: "ما هذا؟ — هذه شجرة عائلتنا." }
 ];
 
 // Distractors come from the other cards.
 const BACKUP = [];
 
-const REPEAT_PER_CARD = 5;                          // each card 10 times
+const REPEAT_PER_CARD = 4;                          // each card 10 times
 const WIN_TARGET = FOCUSED.length * REPEAT_PER_CARD; // 20 × 10 = 200
 const START_HEALTH = 20;
-const TIME_LIMIT = 600;     // 25:00
+const TIME_LIMIT = 720;     // 25:00
 const CELLS_COUNT = 4;
 const HAS_WRITE = true;
 const ROUNDS_PER_FOCUSED = REPEAT_PER_CARD;          // 10
