@@ -56,6 +56,14 @@
       "editable": true
     },
     {
+      "file": "verb-to-be.html",
+      "title": "Verb to be — Affirmative & Negative",
+      "icon": "🔡",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "family-tree-qa.html",
       "title": "Family Tree Q&A",
       "icon": "👨‍👩‍👧‍👦",
