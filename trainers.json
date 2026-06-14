@@ -128,6 +128,14 @@
       "editable": true
     },
     {
+      "file": "explore-text.html",
+      "title": "Explore the Text — Which Child?",
+      "icon": "🧒",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "book-topics.html",
       "title": "Book Topics",
       "icon": "📚",
