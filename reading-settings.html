@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reading — Story Settings | Eaalim Style</title>
+<title>Reading — Story Settings (Q&amp;A) | Eaalim Style</title>
 <style>
   :root {
     --teal: #0E5E5C;
@@ -325,16 +325,16 @@
   <div class="game-container">
     <div class="header">
       <h1>Reading — Story Settings 🏡</h1>
-      <div class="subtitle">EAALIM-STYLE TRAINER · IDENTIFYING SETTING · FARM · COTTAGE · HOUSEBOAT</div>
+      <div class="subtitle">EAALIM-STYLE TRAINER · IDENTIFYING SETTING · QUESTIONS &amp; ANSWERS</div>
     </div>
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen, choose, then write</h2>
-      <div class="level-info" id="level-info">10 cards</div>
-      <p>Listen &amp; tap the matching card <strong id="t-reps">5</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">50</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">10:00</strong>.</p>
+      <div class="level-info" id="level-info">10 Q&amp;A</div>
+      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">5</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">50</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">10:00</strong>.</p>
       <div class="phrases-preview">
-        <h3>🏡 Cards in this lesson</h3>
+        <h3>🏡 Questions in this lesson</h3>
         <ol id="phrases-list"></ol>
       </div>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
@@ -402,30 +402,30 @@
         <div class="ar">— ما شاء الله —</div>
         <div class="en">Congratulations!</div>
         <div class="score-display" id="final-score">0%</div>
-        <p style="color: var(--grey);">Reading · Identifying the setting</p>
+        <p style="color: var(--grey);">Reading · Identifying the setting (Q&amp;A)</p>
       </div>
       <br>
       <button class="start-btn" onclick="location.reload()">Play Again</button>
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · Reading strategy — identifying setting
+      Inspired by the Eaalim Tables Game · Reading — identifying setting (Q&amp;A)
     </div>
   </div>
 
 <script>
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
-  { phrase: "a farm", translation: "مَزرعة" },
-  { phrase: "a cottage", translation: "كوخ" },
-  { phrase: "a houseboat", translation: "منزل عائم" },
-  { phrase: "Sami lives on a farm.", translation: "سامي يعيش في مزرعة." },
-  { phrase: "He has a cow, a rooster, and a sheep.", translation: "لديه بقرة وديك وخروف." },
-  { phrase: "Snow White lives in a small cottage.", translation: "سنو وايت تعيش في كوخ صغير." },
-  { phrase: "Grandpa lives in a houseboat.", translation: "جدّي يعيش في منزل عائم." },
-  { phrase: "The houseboat is big.", translation: "المنزل العائم كبير." },
-  { phrase: "The setting is the place where the story happens.", translation: "المكان هو المكان الذي تحدث فيه القصة." },
-  { phrase: "Where do families live? — Some families live in houses.", translation: "أين تعيش العائلات؟ — بعض العائلات تعيش في بيوت." }
+  { phrase: "Where does Sami live? — He lives on a farm.", translation: "أين يعيش سامي؟ — يعيش في مزرعة." },
+  { phrase: "What animals does Sami have? — He has a cow, a rooster, and a sheep.", translation: "ما الحيوانات التي لدى سامي؟ — لديه بقرة وديك وخروف." },
+  { phrase: "Where does Snow White live? — She lives in a small cottage.", translation: "أين تعيش سنو وايت؟ — تعيش في كوخ صغير." },
+  { phrase: "Where does Grandpa live? — He lives in a houseboat.", translation: "أين يعيش جدّي؟ — يعيش في منزل عائم." },
+  { phrase: "Is the houseboat big? — Yes, it is big.", translation: "هل المنزل العائم كبير؟ — نعم، إنه كبير." },
+  { phrase: "What is the setting? — It is where the story happens.", translation: "ما هو المكان (Setting)؟ — هو المكان الذي تحدث فيه القصة." },
+  { phrase: "Where do families live? — Some families live in houses.", translation: "أين تعيش العائلات؟ — بعض العائلات تعيش في بيوت." },
+  { phrase: "Where do cows and sheep live? — On a farm.", translation: "أين تعيش الأبقار والأغنام؟ — في مزرعة." },
+  { phrase: "What is a small country house? — A cottage.", translation: "ما الكوخ؟ — بيت صغير في الريف." },
+  { phrase: "What is a house on the water? — A houseboat.", translation: "ما المنزل العائم؟ — بيت على الماء." }
 ];
 
 // Distractors come from the other cards.
