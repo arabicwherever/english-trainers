@@ -128,6 +128,14 @@
       "editable": true
     },
     {
+      "file": "capital-letters.html",
+      "title": "Writing — Capital Letters",
+      "icon": "🔠",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "families-page10-words.html",
       "title": "Families: Words in Sentences",
       "icon": "🌐",
