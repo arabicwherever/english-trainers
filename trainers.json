@@ -112,6 +112,14 @@
       "editable": true
     },
     {
+      "file": "short-a.html",
+      "title": "Phonics — Short a Sound",
+      "icon": "🐱",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "families-page10-words.html",
       "title": "Families: Words in Sentences",
       "icon": "🌐",
