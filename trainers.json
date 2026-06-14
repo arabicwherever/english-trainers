@@ -120,6 +120,14 @@
       "editable": true
     },
     {
+      "file": "oracy-family.html",
+      "title": "Oracy — Group Rules & Family",
+      "icon": "👪",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "families-page10-words.html",
       "title": "Families: Words in Sentences",
       "icon": "🌐",
