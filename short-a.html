@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phonics — Short a Sound (cat, rat, bat…) | Eaalim Style</title>
+<title>Phonics — Short a Sentences (cat, bat, bag…) | Eaalim Style</title>
 <style>
   :root {
     --teal: #0E5E5C;
@@ -324,17 +324,17 @@
 <body>
   <div class="game-container">
     <div class="header">
-      <h1>Phonics — Short a Sound 🐱</h1>
-      <div class="subtitle">EAALIM-STYLE TRAINER · SHORT a SOUND · LISTEN, CHOOSE &amp; WRITE</div>
+      <h1>Phonics — Short a Sentences 🐱</h1>
+      <div class="subtitle">EAALIM-STYLE TRAINER · SHORT a SOUND IN SENTENCES · LISTEN, CHOOSE &amp; WRITE</div>
     </div>
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen, choose, then write</h2>
-      <div class="level-info" id="level-info">10 words</div>
-      <p>Listen &amp; tap the matching word <strong id="t-reps">5</strong> times,<br>then <strong>type it correctly</strong> to unlock the next word.<br>Target: <strong id="t-target">50</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">8:00</strong>.</p>
+      <div class="level-info" id="level-info">10 sentences</div>
+      <p>Listen &amp; tap the matching sentence <strong id="t-reps">5</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">50</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">10:00</strong>.</p>
       <div class="phrases-preview">
-        <h3>🐱 Words in this lesson</h3>
+        <h3>🐱 Sentences in this lesson</h3>
         <ol id="phrases-list"></ol>
       </div>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
@@ -402,30 +402,30 @@
         <div class="ar">— ما شاء الله —</div>
         <div class="en">Congratulations!</div>
         <div class="score-display" id="final-score">0%</div>
-        <p style="color: var(--grey);">Phonics · Short a sound</p>
+        <p style="color: var(--grey);">Phonics · Short a sentences</p>
       </div>
       <br>
       <button class="start-btn" onclick="location.reload()">Play Again</button>
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · Short a sound (cat, rat, bat, cap, bag, fan)
+      Inspired by the Eaalim Tables Game · Short a sound in simple sentences
     </div>
   </div>
 
 <script>
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
-  { phrase: "cat", translation: "قِطّة" },
-  { phrase: "rat", translation: "فَأر" },
-  { phrase: "bat", translation: "مَضرَب" },
-  { phrase: "cap", translation: "قُبّعة (كاب)" },
-  { phrase: "bag", translation: "حَقيبة" },
-  { phrase: "fan", translation: "مِروحة" },
-  { phrase: "dad", translation: "بابا" },
-  { phrase: "fat", translation: "سَمين" },
-  { phrase: "hat", translation: "قُبّعة" },
-  { phrase: "map", translation: "خَريطة" }
+  { phrase: "The cat is fat.", translation: "القطة سمينة." },
+  { phrase: "The rat is small.", translation: "الفأر صغير." },
+  { phrase: "I have a bat.", translation: "لديّ مَضرَب." },
+  { phrase: "This is my cap.", translation: "هذه قُبّعتي." },
+  { phrase: "My bag is red.", translation: "حقيبتي حمراء." },
+  { phrase: "The fan is big.", translation: "المروحة كبيرة." },
+  { phrase: "My dad is happy.", translation: "أبي سعيد." },
+  { phrase: "I see a hat.", translation: "أرى قُبّعة." },
+  { phrase: "Look at the map.", translation: "انظر إلى الخريطة." },
+  { phrase: "The man has a cat.", translation: "الرجل لديه قطة." }
 ];
 
 // Distractors come from the other cards.
@@ -434,7 +434,7 @@ const BACKUP = [];
 const REPEAT_PER_CARD = 5;                          // each card 10 times
 const WIN_TARGET = FOCUSED.length * REPEAT_PER_CARD; // 20 × 10 = 200
 const START_HEALTH = 20;
-const TIME_LIMIT = 480;     // 25:00
+const TIME_LIMIT = 600;     // 25:00
 const CELLS_COUNT = 4;
 const HAS_WRITE = true;
 const ROUNDS_PER_FOCUSED = REPEAT_PER_CARD;          // 10
