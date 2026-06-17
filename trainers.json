@@ -104,6 +104,14 @@
       "editable": true
     },
     {
+      "file": "class-friends.html",
+      "title": "Class & Friends — Words in Sentences",
+      "icon": "👫",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "phonics.html",
       "title": "Phonics A–Z",
       "icon": "🔤",
