@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Class &amp; Friends — Words in Sentences | Eaalim Style</title>
+<title>Class &amp; Friends (Q&amp;A) | Eaalim Style</title>
 <style>
   :root {
     --teal: #0E5E5C;
@@ -324,17 +324,17 @@
 <body>
   <div class="game-container">
     <div class="header">
-      <h1>Class &amp; Friends — Words in Sentences 👫</h1>
-      <div class="subtitle">EAALIM-STYLE TRAINER · CLASSMATE · RESPECT · TOGETHER · LISTEN, CHOOSE &amp; WRITE</div>
+      <h1>Class &amp; Friends 👫</h1>
+      <div class="subtitle">EAALIM-STYLE TRAINER · CLASSMATE · RESPECT · TOGETHER · QUESTIONS &amp; ANSWERS</div>
     </div>
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen, choose, then write</h2>
-      <div class="level-info" id="level-info">8 sentences</div>
-      <p>Listen &amp; tap the matching sentence <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">32</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">16:00</strong>.</p>
+      <div class="level-info" id="level-info">8 Q&amp;A</div>
+      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">32</strong> correct · Health: <strong id="t-health">20</strong> · Time: <strong id="t-time">16:00</strong>.</p>
       <div class="phrases-preview">
-        <h3>👫 Sentences in this lesson</h3>
+        <h3>👫 Questions in this lesson</h3>
         <ol id="phrases-list"></ol>
       </div>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
@@ -402,28 +402,28 @@
         <div class="ar">— ما شاء الله —</div>
         <div class="en">Congratulations!</div>
         <div class="score-display" id="final-score">0%</div>
-        <p style="color: var(--grey);">Class &amp; friends · words in sentences</p>
+        <p style="color: var(--grey);">Class &amp; friends (Q&amp;A)</p>
       </div>
       <br>
       <button class="start-btn" onclick="location.reload()">Play Again</button>
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · classmate, respect, together, read, ignore
+      Inspired by the Eaalim Tables Game · classmate, respect, together, read, ignore (Q&amp;A)
     </div>
   </div>
 
 <script>
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
-  { phrase: "He is my classmate.", translation: "هو زميلي في الفصل." },
-  { phrase: "I respect my teacher.", translation: "أحترم معلّمي." },
-  { phrase: "We play together.", translation: "نلعب مع بعض." },
-  { phrase: "I read a book.", translation: "أقرأ كتابًا." },
-  { phrase: "I do not ignore my friend.", translation: "أنا لا أتجاهل صديقي." },
-  { phrase: "I treat my classmate with respect.", translation: "أعامل زميلي باحترام." },
-  { phrase: "We act a play together.", translation: "نمثّل مسرحية مع بعض." },
-  { phrase: "We read a story together.", translation: "نقرأ قصة مع بعض." }
+  { phrase: "Who sits with you in class? — He is my classmate.", translation: "من يجلس معك في الفصل؟ — هو زميلي." },
+  { phrase: "How do you treat your teacher? — I respect my teacher.", translation: "كيف تعامل معلّمك؟ — أحترمه." },
+  { phrase: "How do you play with friends? — We play together.", translation: "كيف تلعب مع أصدقائك؟ — نلعب مع بعض." },
+  { phrase: "What do you do with a book? — I read a book.", translation: "ماذا تفعل بالكتاب؟ — أقرأه." },
+  { phrase: "Do you ignore your friend? — No, I do not.", translation: "هل تتجاهل صديقك؟ — لا." },
+  { phrase: "How do you treat your classmate? — With respect.", translation: "كيف تعامل زميلك؟ — باحترام." },
+  { phrase: "What do you do together in class? — We act a play.", translation: "ماذا تفعلون معًا في الفصل؟ — نمثّل مسرحية." },
+  { phrase: "What do you read together? — A story.", translation: "ماذا تقرؤون معًا؟ — قصة." }
 ];
 
 // Distractors come from the other cards.
