@@ -6,14 +6,14 @@
 <title>Families Around the World — Words in Sentences (p.10) | Eaalim Style</title>
 <style>
   :root {
-    --teal: #0E5E5C;
-    --teal-deep: #083C3B;
-    --gold: #D4AF37;
-    --cream: #FAF7F2;
-    --ink: #1A2E2D;
-    --grey: #6E8282;
+    --teal: #7B1E3B;
+    --teal-deep: #4A1024;
+    --gold: #B14A63;
+    --cream: #FFFFFF;
+    --ink: #2B2B2B;
+    --grey: #6E6E6E;
     --red: #C0392B;
-    --green: #27AE60;
+    --green: #7B1E3B;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -37,18 +37,18 @@
   #timer.warning { color: var(--red); }
 
   .health-bar-container { background: #E8E8E8; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 18px; }
-  .health-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), #7DCEA0); transition: width 0.3s, background 0.3s; width: 100%; }
+  .health-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), #B14A63); transition: width 0.3s, background 0.3s; width: 100%; }
 
   .phrase-counter { background: var(--teal); color: white; padding: 8px 16px; border-radius: 20px; display: inline-block; font-size: 12px; margin-bottom: 14px; letter-spacing: 0.5px; }
-  .phrase-counter b { color: var(--gold); font-size: 14px; }
-  .word-chip { background: var(--gold); color: var(--ink); padding: 3px 12px; border-radius: 12px; font-weight: 800; margin-left: 4px; }
+  .phrase-counter b { color: #fff; font-size: 14px; }
+  .word-chip { background: var(--gold); color: #fff; padding: 3px 12px; border-radius: 12px; font-weight: 800; margin-left: 4px; }
 
   .translation-area { background: white; padding: 20px; border-radius: 15px; margin-bottom: 18px; border: 2px solid var(--gold); }
   .translation-label { color: var(--grey); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
   .translation-text { font-size: 26px; color: var(--teal-deep); font-weight: 700; direction: rtl; font-family: 'Amiri', 'Geeza Pro', serif; line-height: 1.5; }
 
-  .play-button { background: var(--gold); color: var(--ink); border: none; padding: 13px 32px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; margin: 4px; transition: transform 0.15s; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4); }
-  .play-button.slow { background: #E67E22; color: white; }
+  .play-button { background: var(--gold); color: #fff; border: none; padding: 13px 32px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; margin: 4px; transition: transform 0.15s; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4); }
+  .play-button.slow { background: var(--teal-deep); color: white; }
   .play-button:hover { transform: translateY(-2px); }
   .play-button::before { content: "🔊  "; }
   .sound-area { margin-bottom: 18px; }
@@ -80,7 +80,7 @@
   .start-screen, .end-screen { text-align: center; padding: 20px 0; }
   .start-screen h2, .end-screen h2 { color: var(--teal); font-size: 24px; margin-bottom: 15px; }
   .start-screen p { color: var(--grey); margin-bottom: 20px; line-height: 1.6; }
-  .level-info { background: var(--teal); color: var(--gold); display: inline-block; padding: 16px 32px; border-radius: 15px; font-size: 18px; font-weight: 800; margin: 16px 0; }
+  .level-info { background: var(--teal); color: #fff; display: inline-block; padding: 16px 32px; border-radius: 15px; font-size: 18px; font-weight: 800; margin: 16px 0; }
   .phrases-preview { background: white; padding: 18px; border-radius: 12px; margin: 18px auto; max-width: 620px; text-align: left; max-height: 230px; overflow-y: auto; }
   .phrases-preview h3 { color: var(--teal); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
   .phrases-preview ol { padding-left: 22px; color: var(--ink); font-size: 13px; line-height: 1.7; }
@@ -339,7 +339,7 @@ function updateUI() {
   const pct = (health / START_HEALTH) * 100;
   const fill = document.getElementById("health-bar");
   fill.style.width = pct + "%";
-  if (pct > 60) fill.style.background = "linear-gradient(90deg, #27AE60, #7DCEA0)";
+  if (pct > 60) fill.style.background = "linear-gradient(90deg, #7B1E3B, #B14A63)";
   else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
   else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
 

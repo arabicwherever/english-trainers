@@ -6,14 +6,14 @@
 <title>Times Table 2 (×1–12) | Eaalim Style</title>
 <style>
   :root {
-    --teal: #0E5E5C;
-    --teal-deep: #083C3B;
-    --gold: #D4AF37;
-    --cream: #FAF7F2;
-    --ink: #1A2E2D;
-    --grey: #6E8282;
+    --teal: #7B1E3B;
+    --teal-deep: #4A1024;
+    --gold: #B14A63;
+    --cream: #FFFFFF;
+    --ink: #2B2B2B;
+    --grey: #6E6E6E;
     --red: #C0392B;
-    --green: #27AE60;
+    --green: #7B1E3B;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -88,7 +88,7 @@
   }
   .health-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--green), #7DCEA0);
+    background: linear-gradient(90deg, var(--green), #B14A63);
     transition: width 0.3s, background 0.3s;
     width: 100%;
   }
@@ -103,7 +103,7 @@
     margin-bottom: 14px;
     letter-spacing: 0.5px;
   }
-  .phrase-counter b { color: var(--gold); font-size: 14px; }
+  .phrase-counter b { color: #fff; font-size: 14px; }
 
   .translation-area {
     background: white;
@@ -129,8 +129,7 @@
   }
 
   .play-button {
-    background: var(--gold);
-    color: var(--ink);
+    background: var(--gold); color: #fff;
     border: none;
     padding: 13px 32px;
     border-radius: 30px;
@@ -141,7 +140,7 @@
     transition: transform 0.15s;
     box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
   }
-  .play-button.slow { background: #E67E22; color: white; }
+  .play-button.slow { background: var(--teal-deep); color: white; }
   .play-button:hover { transform: translateY(-2px); }
   .play-button::before { content: "🔊  "; }
 
@@ -213,8 +212,7 @@
     line-height: 1.6;
   }
   .level-info {
-    background: var(--teal);
-    color: var(--gold);
+    background: var(--teal); color: #fff;
     display: inline-block;
     padding: 16px 32px;
     border-radius: 15px;
@@ -291,7 +289,7 @@
   .write-model { font-size: 17px; font-weight: 700; color: var(--teal-deep); background: var(--cream); padding: 11px 13px; border-radius: 8px; margin-bottom: 12px; line-height: 1.55; border-left: 4px solid var(--gold); }
   .write-input { width: 100%; font-size: 17px; padding: 12px 14px; border: 2px solid var(--grey); border-radius: 10px; font-family: inherit; resize: none; line-height: 1.5; }
   .write-input:focus { outline: none; border-color: var(--gold); }
-  .write-input.good { border-color: var(--green); background: #EAF7EF; }
+  .write-input.good { border-color: var(--green); background: #F7EAEE; }
   .write-input.bad  { border-color: var(--red);   background: #FBEAE8; }
   .write-feedback { font-size: 14px; font-weight: 800; margin: 10px 0 4px; min-height: 20px; direction: rtl; }
   .write-feedback.ok  { color: var(--green); }
@@ -489,7 +487,7 @@ let awaitingWrite = false;
   const list = document.getElementById("phrases-list");
   if (list) FOCUSED.forEach(f => {
     const li = document.createElement("li");
-    const w = f.word ? '<span class="w" style="color:#0E5E5C;font-weight:800;">' + f.word + '</span> \u2014 ' : "";
+    const w = f.word ? '<span class="w" style="color:#7B1E3B;font-weight:800;">' + f.word + '</span> \u2014 ' : "";
     li.innerHTML = w + f.phrase + ' <span style="color:#6E8282; direction:rtl; font-family:\'Amiri\',\'Geeza Pro\',serif;">' + f.translation + '</span>';
     list.appendChild(li);
   });
@@ -537,7 +535,7 @@ function updateUI() {
   const pct = (health / START_HEALTH) * 100;
   const fill = document.getElementById("health-bar");
   fill.style.width = pct + "%";
-  if (pct > 60) fill.style.background = "linear-gradient(90deg, #27AE60, #7DCEA0)";
+  if (pct > 60) fill.style.background = "linear-gradient(90deg, #7B1E3B, #B14A63)";
   else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
   else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
   const idx = currentIndex;

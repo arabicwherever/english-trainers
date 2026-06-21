@@ -487,7 +487,7 @@ let awaitingWrite = false;
   const list = document.getElementById("phrases-list");
   if (list) FOCUSED.forEach(f => {
     const li = document.createElement("li");
-    const w = f.word ? '<span class="w" style="color:#0E5E5C;font-weight:800;">' + f.word + '</span> \u2014 ' : "";
+    const w = f.word ? '<span class="w" style="color:#7B1E3B;font-weight:800;">' + f.word + '</span> \u2014 ' : "";
     li.innerHTML = w + f.phrase + ' <span style="color:#6E8282; direction:rtl; font-family:\'Amiri\',\'Geeza Pro\',serif;">' + f.translation + '</span>';
     list.appendChild(li);
   });

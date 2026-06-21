@@ -6,14 +6,14 @@
 <title>Length Units Trainer — 100 Questions | Eaalim Style</title>
 <style>
   :root {
-    --teal: #0E5E5C;
-    --teal-deep: #083C3B;
-    --gold: #D4AF37;
-    --cream: #FAF7F2;
-    --ink: #1A2E2D;
-    --grey: #6E8282;
+    --teal: #7B1E3B;
+    --teal-deep: #4A1024;
+    --gold: #B14A63;
+    --cream: #FFFFFF;
+    --ink: #2B2B2B;
+    --grey: #6E6E6E;
     --red: #C0392B;
-    --green: #27AE60;
+    --green: #7B1E3B;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -112,14 +112,13 @@
   }
   .health-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--green), #7DCEA0);
+    background: linear-gradient(90deg, var(--green), #B14A63);
     transition: width 0.3s, background 0.3s;
     width: 100%;
   }
 
   .category-badge {
-    background: var(--gold);
-    color: var(--ink);
+    background: var(--gold); color: #fff;
     padding: 6px 14px;
     border-radius: 20px;
     display: inline-block;
@@ -222,8 +221,7 @@
     line-height: 1.6;
   }
   .level-info {
-    background: var(--teal);
-    color: var(--gold);
+    background: var(--teal); color: #fff;
     display: inline-block;
     padding: 16px 32px;
     border-radius: 15px;
@@ -246,13 +244,11 @@
     transition: all 0.2s;
   }
   .mode-card:hover {
-    background: var(--teal);
-    color: var(--gold);
+    background: var(--teal); color: #fff;
   }
   .mode-card:hover .mode-detail { color: white; }
   .mode-card.selected {
-    background: var(--teal);
-    color: var(--gold);
+    background: var(--teal); color: #fff;
   }
   .mode-card.selected .mode-detail { color: white; }
   .mode-name {
@@ -625,7 +621,7 @@ function updateUI() {
   const pct = (health / maxHealth) * 100;
   const fill = document.getElementById("health-bar");
   fill.style.width = pct + "%";
-  if (pct > 60) fill.style.background = "linear-gradient(90deg, #27AE60, #7DCEA0)";
+  if (pct > 60) fill.style.background = "linear-gradient(90deg, #7B1E3B, #B14A63)";
   else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
   else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
 }
