@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berlitz Ch.1 — Chapter Review | Eaalim Style</title>
+<style>
+  :root {
+    --teal: #7B1E3B;
+    --teal-deep: #4A1024;
+    --gold: #B14A63;
+    --cream: #FFFFFF;
+    --ink: #2B2B2B;
+    --grey: #6E6E6E;
+    --red: #C0392B;
+    --green: #7B1E3B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+    min-height: 100vh;
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .game-container {
+    background: var(--cream);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 36px;
+    max-width: 860px;
+    width: 100%;
+    text-align: center;
+  }
+  .header {
+    border-bottom: 3px solid var(--gold);
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+  }
+  h1 { color: var(--teal); font-size: 26px; font-weight: 900; }
+  .subtitle {
+    color: var(--grey);
+    font-size: 12px;
+    margin-top: 5px;
+    letter-spacing: 1.5px;
+  }
+
+  .stats-bar {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    gap: 6px;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 70px;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--grey);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .stat-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--teal);
+    margin-top: 2px;
+  }
+  #timer.warning { color: var(--red); }
+
+  .health-bar-container {
+    background: #E8E8E8;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .health-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #B14A63);
+    transition: width 0.3s, background 0.3s;
+    width: 100%;
+  }
+
+  .phrase-counter {
+    background: var(--teal);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+  .phrase-counter b { color: #fff; font-size: 14px; }
+
+  .translation-area {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+    border: 2px solid var(--gold);
+  }
+  .translation-label {
+    color: var(--grey);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .translation-text {
+    font-size: 24px;
+    color: var(--teal-deep);
+    font-weight: 700;
+    direction: rtl;
+    font-family: 'Amiri', 'Geeza Pro', serif;
+    line-height: 1.5;
+  }
+
+  .play-button {
+    background: var(--gold); color: #fff;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 4px;
+    transition: transform 0.15s;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  }
+  .play-button.slow { background: var(--teal-deep); color: white; }
+  .play-button:hover { transform: translateY(-2px); }
+  .play-button::before { content: "🔊  "; }
+
+  .sound-area { margin-bottom: 18px; }
+
+  .questions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .question-cell {
+    background: white;
+    padding: 15px 18px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--teal-deep);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border: 3px solid transparent;
+    user-select: none;
+    text-align: left;
+    line-height: 1.4;
+  }
+  .question-cell:hover:not(.disabled) {
+    transform: translateX(4px);
+    border-color: var(--gold);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  }
+  .question-cell.correct {
+    background: var(--green); color: white; animation: pulse-correct 0.5s;
+  }
+  .question-cell.wrong {
+    background: var(--red); color: white; animation: shake 0.4s;
+  }
+  .question-cell.disabled { opacity: 0.5; cursor: not-allowed; }
+  @keyframes pulse-correct {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  .skip-button {
+    background: transparent;
+    color: var(--grey);
+    border: 2px solid var(--grey);
+    padding: 9px 22px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .skip-button:hover { background: var(--grey); color: white; }
+
+  .start-screen, .end-screen { text-align: center; padding: 20px 0; }
+  .start-screen h2, .end-screen h2 {
+    color: var(--teal);
+    font-size: 26px;
+    margin-bottom: 15px;
+  }
+  .start-screen p {
+    color: var(--grey);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .level-info {
+    background: var(--teal); color: #fff;
+    display: inline-block;
+    padding: 16px 32px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 16px 0;
+  }
+  .phrases-preview {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    margin: 18px auto;
+    max-width: 640px;
+    text-align: left;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .phrases-preview h3 {
+    color: var(--teal);
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .phrases-preview ol {
+    padding-left: 22px;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .start-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 16px 45px;
+    border-radius: 30px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s;
+    box-shadow: 0 6px 20px rgba(14, 94, 92, 0.4);
+  }
+  .start-btn:hover { transform: translateY(-2px); }
+  .certificate {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 5px double var(--gold);
+    margin-top: 20px;
+  }
+  .certificate .ar {
+    font-size: 28px;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 8px;
+    direction: rtl;
+    font-family: 'Amiri', 'Geeza Pro', serif;
+  }
+  .certificate .en {
+    font-size: 20px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  .score-display {
+    font-size: 46px;
+    color: var(--teal-deep);
+    font-weight: 900;
+    margin: 12px 0;
+  }
+  /* ── Writing gate ── */
+  .write-panel { background: white; padding: 18px; border-radius: 14px; border: 2px dashed var(--teal); margin-bottom: 14px; text-align: left; }
+  .write-label { font-size: 13px; color: var(--teal); font-weight: 800; margin-bottom: 10px; direction: rtl; line-height: 1.5; }
+  .write-model { font-size: 17px; font-weight: 700; color: var(--teal-deep); background: var(--cream); padding: 11px 13px; border-radius: 8px; margin-bottom: 12px; line-height: 1.55; border-left: 4px solid var(--gold); }
+  .write-input { width: 100%; font-size: 17px; padding: 12px 14px; border: 2px solid var(--grey); border-radius: 10px; font-family: inherit; resize: none; line-height: 1.5; }
+  .write-input:focus { outline: none; border-color: var(--gold); }
+  .write-input.good { border-color: var(--green); background: #F7EAEE; }
+  .write-input.bad  { border-color: var(--red);   background: #FBEAE8; }
+  .write-feedback { font-size: 14px; font-weight: 800; margin: 10px 0 4px; min-height: 20px; direction: rtl; }
+  .write-feedback.ok  { color: var(--green); }
+  .write-feedback.bad { color: var(--red); }
+  .write-check { background: var(--teal); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 15px; font-weight: 800; transition: transform 0.15s, background 0.2s; box-shadow: 0 3px 10px rgba(14,94,92,0.3); }
+  .write-check:hover { transform: translateY(-2px); background: var(--teal-deep); }
+  .nav-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:6px; margin-bottom:6px; }
+  .nav-btn { background: var(--teal); color:#fff; border:none; padding:10px 24px; border-radius:22px; cursor:pointer; font-size:14px; font-weight:700; transition:transform .15s, background .2s; box-shadow:0 3px 10px rgba(14,94,92,0.3); }
+  .nav-btn:hover:not(:disabled){ transform:translateY(-2px); background:var(--teal-deep); }
+  .nav-btn:disabled{ opacity:.4; cursor:not-allowed; box-shadow:none; }
+  .hidden { display: none !important; }
+  .footer {
+    margin-top: 25px;
+    color: var(--grey);
+    font-size: 12px;
+    border-top: 1px solid #E0E0E0;
+    padding-top: 14px;
+  }
+  @media (max-width: 500px) {
+    .game-container { padding: 20px; }
+    h1 { font-size: 18px; }
+    .level-info { font-size: 14px; padding: 12px 24px; }
+    .question-cell { font-size: 13px; padding: 12px; }
+    .translation-text { font-size: 18px; }
+    .stat-value { font-size: 15px; }
+    .stat-label { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="header">
+      <h1>Berlitz Ch.1 — Chapter Review</h1>
+      <div class="subtitle">EAALIM-STYLE TRAINER · CHAPTER 1 · REVIEW · Q&amp;A</div>
+    </div>
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="start-screen">
+      <h2>Listen, choose, then write</h2>
+      <div class="level-info" id="level-info">15 Q&amp;A</div>
+      <p>Listen &amp; tap the matching question &amp; answer <strong id="t-reps">4</strong> times,<br>then <strong>type it correctly</strong> to unlock the next one.<br>Target: <strong id="t-target">60</strong> correct · Health: <strong id="t-health">25</strong> · Time: <strong id="t-time">30:00</strong>.</p>
+      <div class="phrases-preview">
+        <h3>✅ Questions in this lesson</h3>
+        <ol id="phrases-list"></ol>
+      </div>
+      <button class="start-btn" onclick="startGame()">▶ Start</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="hidden">
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-label">Time</span>
+          <span class="stat-value" id="timer">25:00</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Health</span>
+          <span class="stat-value" id="health">50</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Correct</span>
+          <span class="stat-value" id="score">0 / 200</span>
+        </div>
+      </div>
+      <div class="health-bar-container">
+        <div class="health-bar-fill" id="health-bar"></div>
+      </div>
+
+      <div class="phrase-counter">
+        Card <b><span id="phrase-num">1</span></b> of <b><span id="phrase-total">20</span></b>
+        — <span id="phrase-progress">0/10</span>
+      </div>
+
+      <div class="translation-area">
+        <div class="translation-label">Arabic meaning</div>
+        <div class="translation-text" id="translation"></div>
+      </div>
+
+      <div class="sound-area">
+        <button class="play-button" onclick="playSound(1.0)">Play Sound</button>
+        <button class="play-button slow" onclick="playSound(0.7)">Play Slow</button>
+      </div>
+
+      <div class="questions-grid" id="questions-grid"></div>
+
+      <div class="nav-row">
+        <button class="nav-btn" id="nav-first" onclick="goFirst()">⏮ First</button>
+        <button class="nav-btn" id="nav-prev" onclick="goPrev()">◀ Previous</button>
+        <button class="nav-btn" id="nav-next" onclick="goNext()">Next ▶</button>
+        <button class="nav-btn" id="nav-last" onclick="goLast()">Last ⏭</button>
+      </div>
+      <!-- WRITING GATE: must type the sentence correctly to continue -->
+      <div id="write-panel" class="write-panel hidden">
+        <div class="write-label">✍️ اكتب الجملة بشكل صحيح للانتقال للجملة التالية — Type the sentence correctly to continue</div>
+        <div class="write-model" id="write-model"></div>
+        <textarea id="write-input" class="write-input" rows="2" placeholder="اكتب هنا… / type here…"
+                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                  oninput="liveWrite()" onkeydown="if(event.key==='Enter'){event.preventDefault();checkWrite();}"></textarea>
+        <div class="write-feedback" id="write-feedback"></div>
+        <button class="write-check" id="write-check" onclick="checkWrite()">✓ تحقق / Check</button>
+      </div>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="end-screen" class="hidden end-screen">
+      <h2 id="end-title">Game Over</h2>
+      <div class="certificate">
+        <div class="ar">— ما شاء الله —</div>
+        <div class="en">Congratulations!</div>
+        <div class="score-display" id="final-score">0%</div>
+        <p style="color: var(--grey);">Berlitz Ch.1 — Chapter Review</p>
+      </div>
+      <br>
+      <button class="start-btn" onclick="location.reload()">Play Again</button>
+    </div>
+
+    <div class="footer">
+      Inspired by the Eaalim Tables Game · Berlitz Ch.1 — Chapter Review
+    </div>
+  </div>
+
+<script>
+// ── Game Data: question + answer in ONE card ──────────────────────────
+const FOCUSED = [
+  { phrase: "What is your name? — My name is Sara.", translation: "ما اسمك؟ — اسمي سارة." },
+  { phrase: "How old are you? — I am seven years old.", translation: "كم عمرك؟ — سبع سنوات." },
+  { phrase: "Where are you from? — I am from Egypt.", translation: "من أين أنت؟ — من مصر." },
+  { phrase: "What is your nationality? — I am Egyptian.", translation: "ما جنسيتك؟ — مصري." },
+  { phrase: "How do you spell your name? — S-A-R-A.", translation: "تهجّى اسمك؟ — S-A-R-A." },
+  { phrase: "What is your address? — It is 10 Nile Street.", translation: "ما عنوانك؟ — 10 شارع النيل." },
+  { phrase: "What is your phone number? — It is 0100 123 4567.", translation: "ما رقم هاتفك؟ — 0100 123 4567." },
+  { phrase: "This is my friend. — Pleased to meet you.", translation: "هذا صديقي. — سعدت بلقائك." },
+  { phrase: "Nice to meet you. — Nice to meet you, too.", translation: "سعيد بلقائك. — وأنا أيضاً." },
+  { phrase: "Are you from Cairo? — Yes, I am.", translation: "هل أنت من القاهرة؟ — نعم." },
+  { phrase: "Is he your friend? — Yes, he is.", translation: "هل هو صديقك؟ — نعم." },
+  { phrase: "What is his name? — His name is Omar.", translation: "ما اسمه؟ — اسمه عمر." },
+  { phrase: "How are you today? — I am fine, thank you.", translation: "كيف حالك اليوم؟ — بخير، شكراً." },
+  { phrase: "Goodbye! — Goodbye!", translation: "مع السلامة! — مع السلامة!" },
+  { phrase: "Can you count to ten? — Yes, one to ten.", translation: "تعد إلى عشرة؟ — نعم، من واحد لعشرة." }
+];
+
+// Distractors come from the other cards.
+const BACKUP = [];
+
+const REPEAT_PER_CARD = 4;                          // each card 10 times
+const WIN_TARGET = FOCUSED.length * REPEAT_PER_CARD; // 20 × 10 = 200
+const START_HEALTH = 25;
+const TIME_LIMIT = 1800;     // 25:00
+const CELLS_COUNT = 4;
+const HAS_WRITE = true;
+const ROUNDS_PER_FOCUSED = REPEAT_PER_CARD;          // 10
+
+// ── State ─────────────────────────────────────────────────────────────
+let health = START_HEALTH;
+let correctChoices = 0;
+let timeLeft = TIME_LIMIT;
+let gameOver = false;
+let timerInterval = null;
+let currentFocused = null;
+
+// ── Speech ─────────────────────────────────────────────────────────────
+function speak(text, rate) {
+  if (!window.speechSynthesis) return;
+  const synth = window.speechSynthesis;
+  try { synth.cancel(); } catch (e) {}
+  const go = () => {
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-GB";
+    utter.rate = rate || 0.9;
+    utter.pitch = 1.0;
+    const voices = synth.getVoices();
+    const enList = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith("en"));
+    const rank = v => {
+      let s = 0; const n = (v.name || "").toLowerCase(), l = v.lang.toLowerCase();
+      if (v.localService === false) s += 5;
+      if (/google|natural|premium|enhanced|neural|online/.test(n)) s += 4;
+      if (/samantha|alex|daniel|karen|moira|serena|aaron|tessa|jenny|aria|libby/.test(n)) s += 2;
+      if (l === "en-us" || l === "en-gb") s += 1;
+      return s;
+    };
+    enList.sort((a, b) => rank(b) - rank(a));
+    const eng = enList[0];
+    if (eng) { utter.voice = eng; utter.lang = eng.lang; }
+    try { synth.resume(); } catch (e) {}
+    synth.speak(utter);
+  };
+  // small delay after cancel() prevents the browser from clipping the start of the word
+  setTimeout(go, 140);
+}
+function playSound(rate) { if (currentFocused) speak(currentFocused.say || currentFocused.phrase, rate); }
+
+// ── New navigation state ──
+let currentIndex = 0;
+let wordCorrect = [];
+let awaitingWrite = false;
+
+(function fillPreview() {
+  const list = document.getElementById("phrases-list");
+  if (list) FOCUSED.forEach(f => {
+    const li = document.createElement("li");
+    const w = f.word ? '<span class="w" style="color:#7B1E3B;font-weight:800;">' + f.word + '</span> \u2014 ' : "";
+    li.innerHTML = w + f.phrase + ' <span style="color:#6E8282; direction:rtl; font-family:\'Amiri\',\'Geeza Pro\',serif;">' + f.translation + '</span>';
+    list.appendChild(li);
+  });
+  const fmt = s => Math.floor(s/60) + ":" + String(s%60).padStart(2,"0");
+  const set = (id,v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set("t-reps", ROUNDS_PER_FOCUSED);
+  set("t-target", WIN_TARGET);
+  set("t-health", START_HEALTH);
+  set("t-time", fmt(TIME_LIMIT));
+  set("timer", fmt(TIME_LIMIT));
+  set("health", START_HEALTH);
+  set("score", "0 / " + WIN_TARGET);
+  set("phrase-total", FOCUSED.length);
+  set("phrase-progress", "0/" + ROUNDS_PER_FOCUSED);
+})();
+
+function startGame() {
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("game-screen").classList.remove("hidden");
+  health = START_HEALTH; correctChoices = 0; currentIndex = 0;
+  wordCorrect = FOCUSED.map(() => 0);
+  timeLeft = TIME_LIMIT; gameOver = false; awaitingWrite = false;
+  document.getElementById("phrase-total").textContent = FOCUSED.length;
+  updateUI(); startTimer();
+  if (window.speechSynthesis.getVoices().length === 0) window.speechSynthesis.onvoiceschanged = () => nextRound();
+  else nextRound();
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--; updateTimerDisplay();
+    if (timeLeft <= 0) endGame("lose");
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+  const t = document.getElementById("timer");
+  t.textContent = m + ":" + s.toString().padStart(2, "0");
+  t.classList.toggle("warning", timeLeft <= 30);
+}
+
+function updateUI() {
+  document.getElementById("health").textContent = health;
+  document.getElementById("score").textContent = correctChoices + " / " + WIN_TARGET;
+  const pct = (health / START_HEALTH) * 100;
+  const fill = document.getElementById("health-bar");
+  fill.style.width = pct + "%";
+  if (pct > 60) fill.style.background = "linear-gradient(90deg, #7B1E3B, #B14A63)";
+  else if (pct > 30) fill.style.background = "linear-gradient(90deg, #E67E22, #F1C40F)";
+  else fill.style.background = "linear-gradient(90deg, #C0392B, #E74C3C)";
+  const idx = currentIndex;
+  const progressInCard = Math.min(wordCorrect[idx] || 0, ROUNDS_PER_FOCUSED);
+  document.getElementById("phrase-num").textContent = idx + 1;
+  document.getElementById("phrase-progress").textContent = progressInCard + "/" + ROUNDS_PER_FOCUSED;
+  const chip = document.getElementById("word-chip");
+  if (chip && FOCUSED[idx] && FOCUSED[idx].word) chip.textContent = FOCUSED[idx].word;
+  updateNavButtons();
+}
+function updateNavButtons() {
+  const atStart = awaitingWrite || currentIndex <= 0;
+  const atEnd = awaitingWrite || currentIndex >= FOCUSED.length - 1;
+  const set = (id, d) => { const e = document.getElementById(id); if (e) e.disabled = d; };
+  set("nav-first", atStart);
+  set("nav-prev", atStart);
+  set("nav-next", atEnd);
+  set("nav-last", atEnd);
+}
+
+function goPrev() { if (gameOver || awaitingWrite) return; if (currentIndex > 0) { currentIndex--; nextRound(); } }
+function goNext() { if (gameOver || awaitingWrite) return; if (currentIndex < FOCUSED.length - 1) { currentIndex++; nextRound(); } }
+function goFirst() { if (gameOver || awaitingWrite) return; if (currentIndex !== 0) { currentIndex = 0; nextRound(); } }
+function goLast() { if (gameOver || awaitingWrite) return; const last = FOCUSED.length - 1; if (currentIndex !== last) { currentIndex = last; nextRound(); } }
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+function nextRound() {
+  if (gameOver) return;
+  awaitingWrite = false;
+  const wp = document.getElementById("write-panel"); if (wp) wp.classList.add("hidden");
+  const idx = currentIndex;
+  currentFocused = FOCUSED[idx];
+  const others = FOCUSED.filter((_, i) => i !== idx).map(f => f.phrase);
+  const pool = shuffleArray([...BACKUP, ...others]);
+  const distractors = pool.slice(0, CELLS_COUNT - 1);
+  const cellsContent = shuffleArray([currentFocused.phrase, ...distractors]);
+  document.getElementById("translation").textContent = currentFocused.translation;
+  renderCells(cellsContent);
+  setTimeout(() => speak(currentFocused.say || currentFocused.phrase, 0.92), 400);
+  updateUI();
+}
+
+function renderCells(phrases) {
+  const grid = document.getElementById("questions-grid");
+  grid.innerHTML = "";
+  phrases.forEach(p => {
+    const cell = document.createElement("div");
+    cell.className = "question-cell";
+    cell.textContent = p;
+    cell.onclick = () => handleClick(cell, p);
+    grid.appendChild(cell);
+  });
+}
+
+function handleClick(cell, phrase) {
+  if (gameOver || awaitingWrite) return;
+  document.querySelectorAll(".question-cell").forEach(c => c.classList.add("disabled"));
+  if (phrase === currentFocused.phrase) {
+    cell.classList.add("correct");
+    if ((wordCorrect[currentIndex] || 0) < ROUNDS_PER_FOCUSED) {
+      wordCorrect[currentIndex] = (wordCorrect[currentIndex] || 0) + 1;
+      correctChoices++;
+    }
+    updateUI();
+    const justCompleted = (wordCorrect[currentIndex] || 0) === ROUNDS_PER_FOCUSED;
+    if (justCompleted) {
+      if (HAS_WRITE) { setTimeout(enterWriteMode, 450); }
+      else { setTimeout(() => { if (correctChoices >= WIN_TARGET) { endGame("win"); return; } if (currentIndex < FOCUSED.length - 1) currentIndex++; nextRound(); }, 700); }
+    } else if (!HAS_WRITE && correctChoices >= WIN_TARGET) {
+      setTimeout(() => endGame("win"), 700);
+    } else {
+      setTimeout(nextRound, 700);
+    }
+  } else {
+    cell.classList.add("wrong"); health--; updateUI();
+    if (health <= 0) { setTimeout(() => endGame("lose"), 500); }
+    else { setTimeout(() => { cell.classList.remove("wrong"); document.querySelectorAll(".question-cell").forEach(c => c.classList.remove("disabled")); }, 500); }
+  }
+}
+
+function normalizeText(t) {
+  return t.toLowerCase().replace(/[\u2014\u2013-]/g, " ").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+}
+function enterWriteMode() {
+  awaitingWrite = true; updateUI();
+  document.getElementById("write-model").textContent = currentFocused.phrase;
+  const inp = document.getElementById("write-input");
+  inp.value = ""; inp.classList.remove("good", "bad");
+  const fb = document.getElementById("write-feedback"); fb.textContent = ""; fb.className = "write-feedback";
+  document.getElementById("write-panel").classList.remove("hidden");
+  setTimeout(() => inp.focus(), 60);
+}
+function liveWrite() {
+  const inp = document.getElementById("write-input");
+  const target = normalizeText(currentFocused.phrase).split(" ").filter(Boolean);
+  const typed  = normalizeText(inp.value).split(" ").filter(Boolean);
+  let matched = 0;
+  for (let i = 0; i < target.length; i++) { if (typed[i] === target[i]) matched++; else break; }
+  const full = matched === target.length && typed.length === target.length;
+  inp.classList.toggle("good", full); inp.classList.remove("bad");
+  const fb = document.getElementById("write-feedback");
+  if (full) { fb.textContent = "\u2713 \u0635\u062d\u064a\u062d! \u0627\u0636\u063a\u0637 \u062a\u062d\u0642\u0642 \u0623\u0648 Enter"; fb.className = "write-feedback ok"; }
+  else { fb.textContent = "\u062a\u0637\u0627\u0628\u0642: " + matched + " / " + target.length + " \u0643\u0644\u0645\u0629"; fb.className = "write-feedback"; }
+}
+function checkWrite() {
+  if (!awaitingWrite || gameOver) return;
+  const inp = document.getElementById("write-input");
+  const fb  = document.getElementById("write-feedback");
+  if (normalizeText(inp.value) === normalizeText(currentFocused.phrase)) {
+    inp.classList.add("good"); inp.classList.remove("bad");
+    fb.textContent = "\u2713 \u0635\u062d\u064a\u062d! \u0645\u0645\u062a\u0627\u0632"; fb.className = "write-feedback ok";
+    awaitingWrite = false;
+    setTimeout(() => {
+      document.getElementById("write-panel").classList.add("hidden");
+      if (correctChoices >= WIN_TARGET) { endGame("win"); return; }
+      if (currentIndex < FOCUSED.length - 1) currentIndex++;
+      updateUI(); nextRound();
+    }, 650);
+  } else {
+    inp.classList.add("bad"); inp.classList.remove("good");
+    fb.textContent = "\u2717 \u063a\u064a\u0631 \u0635\u062d\u064a\u062d \u2014 \u0635\u062d\u0651\u062d \u0627\u0644\u062c\u0645\u0644\u0629\u060c \u0644\u0646 \u062a\u0646\u062a\u0642\u0644 \u0642\u0628\u0644 \u0623\u0646 \u062a\u0643\u062a\u0628\u0647\u0627 \u0635\u062d";
+    fb.className = "write-feedback bad"; inp.focus();
+  }
+}
+
+function endGame(result) {
+  gameOver = true;
+  clearInterval(timerInterval);
+  document.getElementById("game-screen").classList.add("hidden");
+  document.getElementById("end-screen").classList.remove("hidden");
+  const titleEl = document.getElementById("end-title");
+  const scoreEl = document.getElementById("final-score");
+  const pct = Math.round((correctChoices / WIN_TARGET) * 100);
+  scoreEl.textContent = pct + "%";
+  if (result === "win") { titleEl.textContent = "\ud83c\udf89 You Won!"; titleEl.style.color = "var(--green)"; playWinChime(); }
+  else { titleEl.textContent = "Game Over"; titleEl.style.color = "var(--red)"; }
+}
+
+function playWinChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.frequency.value = freq; osc.type = "sine";
+      gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
+      gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + i * 0.15 + 0.02);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + i * 0.15 + 0.3);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(ctx.currentTime + i * 0.15); osc.stop(ctx.currentTime + i * 0.15 + 0.35);
+    });
+  } catch (e) {}
+}
+
+window.speechSynthesis && window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>

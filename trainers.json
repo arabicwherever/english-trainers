@@ -64,6 +64,46 @@
       "editable": true
     },
     {
+      "file": "berlitz-ch1-p1.html",
+      "title": "Berlitz Ch.1 — Where You're From & Numbers",
+      "icon": "🌍",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "berlitz-ch1-p2.html",
+      "title": "Berlitz Ch.1 — Be & Possessives",
+      "icon": "🔡",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "berlitz-ch1-p3.html",
+      "title": "Berlitz Ch.1 — Introductions",
+      "icon": "🤝",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "berlitz-ch1-p4.html",
+      "title": "Berlitz Ch.1 — Spelling & Phone",
+      "icon": "🔤",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "berlitz-ch1-p5.html",
+      "title": "Berlitz Ch.1 — Chapter Review",
+      "icon": "✅",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "family-tree-qa.html",
       "title": "Family Tree Q&A",
       "icon": "👨‍👩‍👧‍👦",
