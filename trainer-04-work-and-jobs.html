@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work & Jobs — 15 Cards | Eaalim Style</title>
+<meta name="description" content="Eaalim-style English trainer: Work & Jobs. 15 Q&amp;A cards with Arabic meanings — listen, choose, write.">
+<style>
+:root {
+  --primary: #2A9D8F;
+  --primary-dark: #1F7A6F;
+  --accent: #E76F51;
+  --warm: #F4A261;
+  --cream: #FFF6E6;
+  --grey: #6E8282;
+  --dark: #264653;
+  --good: #06A77D;
+  --bad: #E63946;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Tajawal', 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #FFF6E6 0%, #FAEED5 100%);
+  min-height: 100vh; padding: 20px; color: var(--dark);
+}
+.game-container { max-width: 880px; margin: 0 auto; }
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white; border-radius: 20px; padding: 24px; text-align: center;
+  box-shadow: 0 8px 24px rgba(42, 157, 143, 0.25); margin-bottom: 16px;
+}
+.header h1 { font-size: clamp(24px, 5vw, 34px); margin-bottom: 6px; }
+.subtitle { font-size: 13px; opacity: 0.9; letter-spacing: 1.5px; text-transform: uppercase; }
+.start-screen, #end-screen {
+  background: white; padding: 28px; border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06); text-align: center;
+}
+.start-screen h2 { color: var(--primary-dark); margin-bottom: 12px; }
+.level-info {
+  display: inline-block; background: var(--cream); color: var(--accent);
+  padding: 6px 16px; border-radius: 20px; font-weight: bold; margin: 8px 0;
+}
+.start-screen p { color: var(--grey); line-height: 1.8; margin: 16px auto; max-width: 560px; }
+.phrases-preview {
+  background: var(--cream); padding: 18px 20px; border-radius: 14px;
+  margin: 20px 0; text-align: left;
+}
+.phrases-preview h3 { color: var(--accent); margin-bottom: 12px; font-size: 18px; }
+.phrases-preview ol { padding-left: 24px; list-style-position: outside; }
+.phrases-preview li { margin: 8px 0; line-height: 1.7; font-size: 15px; }
+.ar-tr { color: var(--grey); direction: rtl; font-family: 'Amiri', 'Geeza Pro', serif; }
+.start-btn {
+  background: linear-gradient(135deg, var(--accent), var(--warm));
+  color: white; border: none; padding: 14px 36px; font-size: 20px; font-weight: bold;
+  border-radius: 30px; cursor: pointer; font-family: inherit;
+  box-shadow: 0 6px 18px rgba(231, 111, 81, 0.4); transition: transform 0.2s;
+}
+.start-btn:active { transform: scale(0.96); }
+.hidden { display: none; }
+#game-screen {
+  background: white; padding: 24px; border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+.stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+.stat { background: var(--cream); padding: 10px 14px; border-radius: 12px; text-align: center; }
+.stat-label { font-size: 12px; color: var(--grey); display: block; text-transform: uppercase; letter-spacing: 1px; }
+.stat-value { font-size: 22px; color: var(--primary-dark); font-weight: bold; }
+.health-bar-container {
+  background: #E0E0E0; height: 8px; border-radius: 6px;
+  margin: 8px 0 18px; overflow: hidden;
+}
+.health-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--good), var(--primary));
+  width: 100%; transition: width 0.4s ease;
+}
+.phrase-counter { text-align: center; color: var(--grey); margin-bottom: 12px; font-size: 16px; }
+.translation-area {
+  background: var(--cream); border-right: 5px solid var(--accent);
+  padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; text-align: center;
+}
+.translation-label { font-size: 12px; color: var(--grey); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+.translation-text {
+  font-size: clamp(18px, 4vw, 24px); color: var(--dark);
+  direction: rtl; font-family: 'Amiri', 'Geeza Pro', serif; font-weight: 700;
+}
+.sound-area { display: flex; gap: 10px; justify-content: center; margin: 14px 0 20px; flex-wrap: wrap; }
+.play-button {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white; border: none; padding: 12px 24px; border-radius: 24px;
+  font-size: 16px; font-weight: bold; cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+}
+.play-button.slow { background: linear-gradient(135deg, var(--warm), var(--accent)); }
+.play-button:active { transform: scale(0.96); }
+.questions-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+@media (min-width: 640px) { .questions-grid { grid-template-columns: 1fr 1fr; } }
+.q-card {
+  background: white; border: 2px solid #E0E0E0; padding: 14px 16px;
+  border-radius: 12px; cursor: pointer; font-size: 15px; color: var(--dark);
+  transition: all 0.2s; text-align: left; line-height: 1.5; min-height: 60px;
+  display: flex; align-items: center; font-family: inherit;
+}
+.q-card:hover { background: var(--cream); border-color: var(--primary); }
+.q-card.correct { background: #C8F0E6; border-color: var(--good); color: var(--good); font-weight: bold; }
+.q-card.wrong { background: #FFD6D6; border-color: var(--bad); color: var(--bad); }
+.nav-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+.nav-btn {
+  background: white; color: var(--grey); border: 2px solid #E0E0E0;
+  padding: 8px 14px; border-radius: 20px; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+.write-panel {
+  background: var(--cream); padding: 18px; border-radius: 14px;
+  border: 2px dashed var(--accent); margin-top: 12px;
+}
+.write-label { font-size: 14px; color: var(--dark); text-align: center; margin-bottom: 10px; font-weight: bold; }
+.write-model {
+  background: white; padding: 10px 14px; border-radius: 8px;
+  font-size: 16px; color: var(--primary-dark); font-weight: bold;
+  text-align: center; margin-bottom: 10px;
+}
+.write-input {
+  width: 100%; padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px;
+  font-size: 16px; font-family: inherit; resize: vertical;
+}
+.write-input:focus { outline: none; border-color: var(--primary); }
+.write-feedback { text-align: center; margin: 10px 0; font-weight: bold; min-height: 24px; }
+.write-feedback.good { color: var(--good); }
+.write-feedback.bad { color: var(--bad); }
+.write-check {
+  display: block; margin: 0 auto; background: linear-gradient(135deg, var(--good), var(--primary));
+  color: white; border: none; padding: 10px 28px; border-radius: 24px;
+  font-size: 16px; font-weight: bold; cursor: pointer; font-family: inherit;
+}
+.end-screen { padding: 40px 24px; }
+.end-screen h2 { color: var(--primary-dark); margin-bottom: 20px; font-size: 30px; }
+.certificate {
+  background: linear-gradient(135deg, #FFF9E6, #FFE5B4);
+  border: 3px dashed var(--accent); border-radius: 20px;
+  padding: 30px 20px; margin-bottom: 20px;
+}
+.certificate .ar { direction: rtl; font-family: 'Amiri', 'Geeza Pro', serif; font-size: 24px; color: var(--accent); margin-bottom: 8px; }
+.certificate .en { font-size: 22px; color: var(--primary-dark); margin-bottom: 16px; }
+.score-display { font-size: 48px; font-weight: bold; color: var(--good); margin: 16px 0; }
+.footer { text-align: center; margin-top: 20px; color: var(--grey); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="game-container">
+  <div class="header">
+    <h1>💼 Work & Jobs — 15 Cards</h1>
+    <div class="subtitle">EAALIM-STYLE TRAINER · Careers and professional life</div>
+  </div>
+  <div id="start-screen" class="start-screen">
+    <h2>Listen, choose, then write</h2>
+    <div class="level-info">15 cards</div>
+    <p>
+      Listen and tap the matching card <strong>10</strong> times,<br>
+      then <strong>type the whole sentence correctly</strong> to unlock the next card.<br>
+      Target: <strong>150</strong> correct · Health: <strong>50</strong> · Time: <strong>25:00</strong>.
+    </p>
+    <div class="phrases-preview">
+      <h3>💼 Cards in this lesson</h3>
+      <ol id="phrases-list"></ol>
+    </div>
+    <button class="start-btn" onclick="startGame()">▶ Start</button>
+  </div>
+  <div id="game-screen" class="hidden">
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-label">Time</span><span class="stat-value" id="timer">25:00</span></div>
+      <div class="stat"><span class="stat-label">Health</span><span class="stat-value" id="health">50</span></div>
+      <div class="stat"><span class="stat-label">Correct</span><span class="stat-value" id="score">0 / 150</span></div>
+    </div>
+    <div class="health-bar-container"><div class="health-bar-fill" id="health-bar"></div></div>
+    <div class="phrase-counter">
+      Card <b><span id="phrase-num">1</span></b> of <b><span id="phrase-total">15</span></b>
+      — <span id="phrase-progress">0/10</span>
+    </div>
+    <div class="translation-area">
+      <div class="translation-label">Arabic meaning</div>
+      <div class="translation-text" id="translation"></div>
+    </div>
+    <div class="sound-area">
+      <button class="play-button" onclick="playSound(1)">🔊 Play Sound</button>
+      <button class="play-button slow" onclick="playSound(0.6)">🐢 Play Slow</button>
+    </div>
+    <div class="questions-grid" id="questions-grid"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goCard(0)">⏮ First</button>
+      <button class="nav-btn" onclick="goCard(currentCard - 1)">◀ Previous</button>
+      <button class="nav-btn" onclick="goCard(currentCard + 1)">Next ▶</button>
+      <button class="nav-btn" onclick="goCard(CARDS.length - 1)">Last ⏭</button>
+    </div>
+    <div id="write-panel" class="write-panel hidden">
+      <div class="write-label">✍️ اكتب الجملة بشكل صحيح للانتقال — Type the sentence correctly to continue</div>
+      <div class="write-model" id="write-model"></div>
+      <textarea id="write-input" class="write-input" rows="2" placeholder="اكتب هنا… / type here…" autocomplete="off" spellcheck="false"></textarea>
+      <div class="write-feedback" id="write-feedback"></div>
+      <button class="write-check" onclick="checkWrite()">✓ تحقق / Check</button>
+    </div>
+  </div>
+  <div id="end-screen" class="hidden end-screen">
+    <h2>🎉 Lesson Complete!</h2>
+    <div class="certificate">
+      <div class="ar">— ما شاء الله —</div>
+      <div class="en">Congratulations!</div>
+      <div class="score-display" id="final-score">0%</div>
+      <p style="color: var(--grey);">Work & Jobs · 15 Cards</p>
+    </div>
+    <button class="start-btn" onclick="restart()">Play Again</button>
+  </div>
+  <div class="footer">Eaalim-Style English Trainer · Work & Jobs — 15 cards</div>
+</div>
+<script>
+const CARDS = [
+  {
+    "q": "What is your job, Karim?",
+    "a": "I am an accountant in a small company.",
+    "ar": "ما عملك يا كريم؟ — أنا محاسب في شركة صغيرة."
+  },
+  {
+    "q": "How long have you worked there?",
+    "a": "I have worked there for about two years.",
+    "ar": "منذ متى وأنت تعمل هناك؟ — أعمل هناك منذ حوالي سنتين."
+  },
+  {
+    "q": "Do you enjoy your job?",
+    "a": "Yes, the team is very friendly and helpful.",
+    "ar": "هل تستمتع بعملك؟ — نعم، الفريق ودود ومتعاون جداً."
+  },
+  {
+    "q": "What time do you start work?",
+    "a": "I start at nine in the morning.",
+    "ar": "في أي وقت تبدأ العمل؟ — أبدأ في التاسعة صباحاً."
+  },
+  {
+    "q": "Where is your office?",
+    "a": "It is in the city centre, near the station.",
+    "ar": "أين يقع مكتبك؟ — في وسط المدينة، قرب المحطة."
+  },
+  {
+    "q": "Do you work from home sometimes?",
+    "a": "Yes, I work from home on Wednesdays.",
+    "ar": "هل تعمل من البيت أحياناً؟ — نعم، أعمل من البيت أيام الأربعاء."
+  },
+  {
+    "q": "Who is your boss?",
+    "a": "My boss is Mrs. Khalil. She is very fair.",
+    "ar": "من هو مديرك؟ — مديرتي السيدة خليل، وهي عادلة جداً."
+  },
+  {
+    "q": "How many people work in your team?",
+    "a": "There are eight of us, including the manager.",
+    "ar": "كم شخصاً يعمل في فريقك؟ — نحن ثمانية، بمن فيهم المدير."
+  },
+  {
+    "q": "Do you have meetings every day?",
+    "a": "We have a short team meeting in the morning.",
+    "ar": "هل لديك اجتماعات يومياً؟ — لدينا اجتماع فريق قصير في الصباح."
+  },
+  {
+    "q": "What did you study at university?",
+    "a": "I studied Business Administration.",
+    "ar": "ماذا درست في الجامعة؟ — درست إدارة الأعمال."
+  },
+  {
+    "q": "Would you like to change jobs?",
+    "a": "Maybe one day, but I am happy for now.",
+    "ar": "هل تود تغيير عملك؟ — ربما يوماً ما، لكنني راضٍ الآن."
+  },
+  {
+    "q": "How long is your lunch break?",
+    "a": "We get an hour for lunch.",
+    "ar": "كم مدة استراحة الغداء؟ — لدينا ساعة لتناول الغداء."
+  },
+  {
+    "q": "Are you busy this week?",
+    "a": "Yes, we have a big project deadline on Friday.",
+    "ar": "هل أنت مشغول هذا الأسبوع؟ — نعم، لدينا موعد تسليم مشروع كبير الجمعة."
+  },
+  {
+    "q": "Do you travel for work?",
+    "a": "Sometimes I travel to clients in other cities.",
+    "ar": "هل تسافر بسبب العمل؟ — أحياناً أسافر للعملاء في مدن أخرى."
+  },
+  {
+    "q": "What do you want to be in the future?",
+    "a": "I want to become a project manager one day.",
+    "ar": "ماذا تريد أن تصبح في المستقبل؟ — أريد أن أصبح مدير مشاريع يوماً ما."
+  }
+];
+const REPS_PER_CARD = 10;
+const TARGET = CARDS.length * REPS_PER_CARD;
+const START_HEALTH = 50;
+const START_TIME = 25 * 60;
+let currentCard = 0;
+let cardProgress = Array(CARDS.length).fill(0);
+let score = 0, health = START_HEALTH, timeLeft = START_TIME;
+let timerInterval = null, writeUnlocked = false, lastChoiceTime = 0;
+const list = document.getElementById('phrases-list');
+CARDS.forEach(c => {
+  const li = document.createElement('li');
+  li.innerHTML = `<strong>${c.q}</strong> — ${c.a} <span class="ar-tr">${c.ar}</span>`;
+  list.appendChild(li);
+});
+function startGame() {
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('game-screen').classList.remove('hidden');
+  resetState(); renderCard(); startTimer();
+}
+function resetState() {
+  currentCard = 0; cardProgress = Array(CARDS.length).fill(0);
+  score = 0; health = START_HEALTH; timeLeft = START_TIME; writeUnlocked = false;
+  updateStats();
+}
+function updateStats() {
+  const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+  document.getElementById('timer').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('health').textContent = health;
+  document.getElementById('score').textContent = `${score} / ${TARGET}`;
+  document.getElementById('health-bar').style.width = `${(health / START_HEALTH) * 100}%`;
+  document.getElementById('phrase-num').textContent = currentCard + 1;
+  document.getElementById('phrase-total').textContent = CARDS.length;
+  document.getElementById('phrase-progress').textContent = `${cardProgress[currentCard]}/${REPS_PER_CARD}`;
+}
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => { timeLeft--; updateStats(); if (timeLeft <= 0) endGame(); }, 1000);
+}
+function renderCard() {
+  const c = CARDS[currentCard];
+  document.getElementById('translation').textContent = c.ar;
+  const distractors = [];
+  while (distractors.length < 3) {
+    const idx = Math.floor(Math.random() * CARDS.length);
+    if (idx !== currentCard && !distractors.includes(idx)) distractors.push(idx);
+  }
+  const options = [...distractors.map(i => ({ text: CARDS[i].a, correct: false })), { text: c.a, correct: true }];
+  options.sort(() => Math.random() - 0.5);
+  const grid = document.getElementById('questions-grid');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'q-card'; btn.textContent = opt.text;
+    btn.onclick = () => handleChoice(btn, opt.correct);
+    grid.appendChild(btn);
+  });
+  writeUnlocked = cardProgress[currentCard] >= REPS_PER_CARD;
+  toggleWrite(writeUnlocked); updateStats(); playSound(1);
+}
+function handleChoice(btn, isCorrect) {
+  const now = Date.now();
+  if (now - lastChoiceTime < 400) return;
+  lastChoiceTime = now;
+  if (isCorrect) {
+    btn.classList.add('correct'); score++; cardProgress[currentCard]++;
+    if (cardProgress[currentCard] >= REPS_PER_CARD) { writeUnlocked = true; toggleWrite(true); }
+    setTimeout(() => { if (!writeUnlocked) renderCard(); }, 600);
+  } else {
+    btn.classList.add('wrong'); health = Math.max(0, health - 2);
+    if (health <= 0) endGame();
+    setTimeout(() => btn.classList.remove('wrong'), 800);
+  }
+  updateStats();
+}
+function toggleWrite(show) {
+  const panel = document.getElementById('write-panel');
+  if (show) {
+    panel.classList.remove('hidden');
+    document.getElementById('write-model').textContent = `${CARDS[currentCard].q} — ${CARDS[currentCard].a}`;
+    document.getElementById('write-input').value = '';
+    document.getElementById('write-feedback').textContent = '';
+    document.getElementById('write-feedback').className = 'write-feedback';
+  } else panel.classList.add('hidden');
+}
+function normalize(s) {
+  return s.toLowerCase().replace(/[.,!?'"`’‘]/g, '').replace(/\s+/g, ' ').trim();
+}
+function checkWrite() {
+  const input = document.getElementById('write-input').value;
+  const target = `${CARDS[currentCard].q} ${CARDS[currentCard].a}`;
+  const fb = document.getElementById('write-feedback');
+  if (normalize(input) === normalize(target)) {
+    fb.textContent = '✅ Excellent! Moving to next card...';
+    fb.className = 'write-feedback good';
+    setTimeout(() => {
+      if (currentCard < CARDS.length - 1) { currentCard++; renderCard(); }
+      else endGame();
+    }, 900);
+  } else {
+    fb.textContent = '❌ Almost! Check spelling and punctuation, then try again.';
+    fb.className = 'write-feedback bad';
+    health = Math.max(0, health - 1); updateStats();
+  }
+}
+function goCard(n) { if (n < 0 || n >= CARDS.length) return; currentCard = n; renderCard(); }
+function playSound(rate) {
+  if (!('speechSynthesis' in window)) return;
+  const c = CARDS[currentCard]; speechSynthesis.cancel();
+  const u1 = new SpeechSynthesisUtterance(c.q); u1.rate = rate; u1.lang = 'en-US';
+  const u2 = new SpeechSynthesisUtterance(c.a); u2.rate = rate; u2.lang = 'en-US';
+  speechSynthesis.speak(u1); speechSynthesis.speak(u2);
+}
+function endGame() {
+  if (timerInterval) clearInterval(timerInterval);
+  document.getElementById('game-screen').classList.add('hidden');
+  document.getElementById('end-screen').classList.remove('hidden');
+  document.getElementById('final-score').textContent = `${Math.round((score / TARGET) * 100)}%`;
+}
+function restart() {
+  document.getElementById('end-screen').classList.add('hidden');
+  document.getElementById('start-screen').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
