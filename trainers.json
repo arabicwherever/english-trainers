@@ -602,6 +602,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "would-you-like.html",
+      "title": "Would You Like…? — Q&A",
+      "icon": "🙋",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
