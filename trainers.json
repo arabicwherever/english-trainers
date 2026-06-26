@@ -76,6 +76,14 @@
       "editable": true
     },
     {
+      "file": "possessive-pronouns.html",
+      "title": "Possessive Pronouns",
+      "icon": "🔑",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "countries-nationalities.html",
       "title": "Countries & Nationalities",
       "icon": "🌍",
