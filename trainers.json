@@ -68,6 +68,14 @@
       "editable": true
     },
     {
+      "file": "verb-to-be-qa.html",
+      "title": "Verb to be — Q&A (20)",
+      "icon": "📝",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "countries-nationalities.html",
       "title": "Countries & Nationalities",
       "icon": "🌍",
@@ -562,6 +570,14 @@
       "section": "maths",
       "type": "plain",
       "editable": false
+    },
+    {
+      "file": "letters-qa.html",
+      "title": "The Alphabet — Q&A",
+      "icon": "🔤",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
