@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Would You Like…? — Q&A | Eaalim Style</title>
+<title>Would … Like…? — Pronouns Q&A | Eaalim Style</title>
 <style>
   :root {
     --teal: #7B1E3B;
@@ -322,15 +322,15 @@
 <body>
   <div class="game-container">
     <div class="header">
-      <h1>Would You Like…? — Q&amp;A</h1>
-      <div class="subtitle">EAALIM-STYLE TRAINER · OFFERS &amp; POLITE QUESTIONS · Q&amp;A</div>
+      <h1>Would … Like…? — Q&amp;A</h1>
+      <div class="subtitle">EAALIM-STYLE TRAINER · WOULD __ LIKE…? · PRONOUN CHANGES</div>
     </div>
 
     <!-- START SCREEN -->
     <div id="start-screen" class="start-screen">
       <h2>Listen and pick the right answer</h2>
       <div class="level-info" id="level-info">15 Q&amp;A</div>
-      <p>Listen &amp; tap the matching question &amp; answer.<br>Each card is practised <strong id="t-reps">10</strong> times.<br>Target: <strong id="t-target">150</strong> correct · Health: <strong id="t-health">50</strong> · Time: <strong id="t-time">20:00</strong>.</p>
+      <p>Listen &amp; tap the matching question &amp; answer.<br>The subject pronoun changes every card (you · they · she · he · it).<br>Each card is practised <strong id="t-reps">10</strong> times. Target: <strong id="t-target">150</strong> · Health: <strong id="t-health">50</strong> · Time: <strong id="t-time">20:00</strong>.</p>
       <div class="phrases-preview">
         <h3>🙋 Questions in this lesson</h3>
         <ol id="phrases-list"></ol>
@@ -400,14 +400,14 @@
         <div class="ar">— ما شاء الله —</div>
         <div class="en">Congratulations!</div>
         <div class="score-display" id="final-score">0%</div>
-        <p style="color: var(--grey);">Would you like…? · Offers &amp; polite questions</p>
+        <p style="color: var(--grey);">Would … like…? · pronoun changes each card</p>
       </div>
       <br>
       <button class="start-btn" onclick="location.reload()">Play Again</button>
     </div>
 
     <div class="footer">
-      Inspired by the Eaalim Tables Game · Would you like…?
+      Inspired by the Eaalim Tables Game · Would … like…?
     </div>
   </div>
 
@@ -415,64 +415,64 @@
 // ── Game Data: question + answer in ONE card ──────────────────────────
 const FOCUSED = [
   {
-    "phrase": "Would you like some water? — Yes, please.",
-    "translation": "هل تريد بعض الماء؟ — نعم، من فضلك."
+    "phrase": "Would you like some water? — Yes, I would.",
+    "translation": "هل تريد بعض الماء؟ — نعم، أريد."
   },
   {
-    "phrase": "Would you like a sandwich? — No, thank you.",
-    "translation": "هل تريد ساندويتش؟ — لا، شكرًا."
+    "phrase": "Would they like some water? — Yes, they would.",
+    "translation": "هل يريدون بعض الماء؟ — نعم، يريدون."
   },
   {
-    "phrase": "Would you like tea or coffee? — I would like tea.",
-    "translation": "هل تريد شاي أم قهوة؟ — أريد شاي."
+    "phrase": "Would she like some water? — Yes, she would.",
+    "translation": "هل تريد هي بعض الماء؟ — نعم، تريد."
   },
   {
-    "phrase": "Would you like some cake? — Yes, I would love some.",
-    "translation": "هل تريد بعض الكيك؟ — نعم، أحب ذلك."
+    "phrase": "Would he like some water? — Yes, he would.",
+    "translation": "هل يريد هو بعض الماء؟ — نعم، يريد."
   },
   {
-    "phrase": "Would you like to play? — Yes, let's play.",
-    "translation": "هل تريد أن تلعب؟ — نعم، هيا نلعب."
+    "phrase": "Would it like some water? — Yes, it would.",
+    "translation": "هل يريد (الحيوان) بعض الماء؟ — نعم، يريد."
   },
   {
-    "phrase": "Would you like an apple? — Yes, please.",
-    "translation": "هل تريد تفاحة؟ — نعم، من فضلك."
+    "phrase": "Would you like to play? — Yes, I would.",
+    "translation": "هل تريد أن تلعب؟ — نعم، أريد."
   },
   {
-    "phrase": "Would you like more juice? — No, thank you. I am full.",
-    "translation": "هل تريد المزيد من العصير؟ — لا، شكرًا. أنا شبعان."
+    "phrase": "Would they like to play? — Yes, they would.",
+    "translation": "هل يريدون أن يلعبوا؟ — نعم، يريدون."
   },
   {
-    "phrase": "Would you like to sit down? — Yes, thank you.",
-    "translation": "هل تريد أن تجلس؟ — نعم، شكرًا."
+    "phrase": "Would she like to play? — Yes, she would.",
+    "translation": "هل تريد هي أن تلعب؟ — نعم، تريد."
   },
   {
-    "phrase": "Would you like soup or salad? — I would like salad.",
-    "translation": "هل تريد شوربة أم سلطة؟ — أريد سلطة."
+    "phrase": "Would he like to play? — Yes, he would.",
+    "translation": "هل يريد هو أن يلعب؟ — نعم، يريد."
   },
   {
-    "phrase": "Would you like some help? — Yes, please.",
-    "translation": "هل تريد بعض المساعدة؟ — نعم، من فضلك."
+    "phrase": "Would it like to play? — Yes, it would.",
+    "translation": "هل يريد أن يلعب؟ — نعم، يريد."
   },
   {
-    "phrase": "Would you like to come with me? — Yes, of course.",
-    "translation": "هل تريد أن تأتي معي؟ — نعم، بالطبع."
+    "phrase": "Would you like an apple? — Yes, I would.",
+    "translation": "هل تريد تفاحة؟ — نعم، أريد."
   },
   {
-    "phrase": "Would you like ice cream? — Yes, I would like chocolate.",
-    "translation": "هل تريد آيس كريم؟ — نعم، أريد شوكولاتة."
+    "phrase": "Would they like an apple? — Yes, they would.",
+    "translation": "هل يريدون تفاحة؟ — نعم، يريدون."
   },
   {
-    "phrase": "Would you like a drink? — Yes, some water, please.",
-    "translation": "هل تريد مشروبًا؟ — نعم، بعض الماء من فضلك."
+    "phrase": "Would she like an apple? — Yes, she would.",
+    "translation": "هل تريد هي تفاحة؟ — نعم، تريد."
   },
   {
-    "phrase": "Would you like to read a book? — Yes, I would.",
-    "translation": "هل تريد أن تقرأ كتابًا؟ — نعم، أريد."
+    "phrase": "Would he like an apple? — Yes, he would.",
+    "translation": "هل يريد هو تفاحة؟ — نعم، يريد."
   },
   {
-    "phrase": "Would you like pizza for dinner? — Yes, I love pizza.",
-    "translation": "هل تريد بيتزا على العشاء؟ — نعم، أحب البيتزا."
+    "phrase": "Would it like some milk? — Yes, it would.",
+    "translation": "هل يريد بعض الحليب؟ — نعم، يريد."
   }
 ];
 
