@@ -626,6 +626,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "may-i.html",
+      "title": "May …? — Asking Permission",
+      "icon": "🙏",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
