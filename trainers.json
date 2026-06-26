@@ -228,6 +228,14 @@
       "editable": false
     },
     {
+      "file": "meals.html",
+      "title": "Meals — Breakfast, Lunch & Dinner",
+      "icon": "🍳",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "desert-adaptations.html",
       "title": "Desert Animal Adaptations",
       "icon": "🦎",
