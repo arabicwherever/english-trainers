@@ -618,6 +618,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "pronoun-change.html",
+      "title": "Subject Pronouns — you/they/she/he/it",
+      "icon": "🧑",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
