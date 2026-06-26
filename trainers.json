@@ -548,6 +548,14 @@
       "editable": true
     },
     {
+      "file": "numbers-1-20.html",
+      "title": "Numbers 1–20",
+      "icon": "🔢",
+      "section": "maths",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "length-units.html",
       "title": "Length Units",
       "icon": "📏",
