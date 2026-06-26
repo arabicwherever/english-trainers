@@ -594,6 +594,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "restaurant-order.html",
+      "title": "Ordering in a Restaurant — Q&A",
+      "icon": "🍽️",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
