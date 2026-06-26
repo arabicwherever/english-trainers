@@ -68,6 +68,14 @@
       "editable": true
     },
     {
+      "file": "countries-nationalities.html",
+      "title": "Countries & Nationalities",
+      "icon": "🌍",
+      "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "berlitz-ch1-p1.html",
       "title": "Berlitz Ch.1 — Where You're From & Numbers",
       "icon": "🌍",
