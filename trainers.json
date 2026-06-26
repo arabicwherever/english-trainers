@@ -6,6 +6,10 @@
       "title": "📘 Berlitz — Chapter 1"
     },
     {
+      "id": "book",
+      "title": "📕 Berlitz Level 1 — Chapters"
+    },
+    {
       "id": "vocab",
       "title": "📚 Vocabulary & Reading"
     },
@@ -100,6 +104,78 @@
       "title": "Berlitz Ch.1 — Chapter Review",
       "icon": "✅",
       "section": "chapter1",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch2.html",
+      "title": "Berlitz Ch.2 — Food & Ordering",
+      "icon": "🍽️",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch3.html",
+      "title": "Berlitz Ch.3 — Jobs (What do you do?)",
+      "icon": "💼",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch4.html",
+      "title": "Berlitz Ch.4 — Shopping (How much?)",
+      "icon": "🛒",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch5.html",
+      "title": "Berlitz Ch.5 — Travel (Have a nice trip!)",
+      "icon": "✈️",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch7.html",
+      "title": "Berlitz Ch.7 — Directions",
+      "icon": "🧭",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch8.html",
+      "title": "Berlitz Ch.8 — Family",
+      "icon": "👨‍👩‍👧‍👦",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch9.html",
+      "title": "Berlitz Ch.9 — Can (Abilities)",
+      "icon": "💪",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch10.html",
+      "title": "Berlitz Ch.10 — Time",
+      "icon": "⏰",
+      "section": "book",
+      "type": "write",
+      "editable": true
+    },
+    {
+      "file": "book-ch11.html",
+      "title": "Berlitz Ch.11 — Health",
+      "icon": "🌡️",
+      "section": "book",
       "type": "write",
       "editable": true
     },
