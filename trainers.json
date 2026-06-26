@@ -572,6 +572,14 @@
       "editable": true
     },
     {
+      "file": "numbers-20-100.html",
+      "title": "Numbers 20–100",
+      "icon": "💯",
+      "section": "maths",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "length-units.html",
       "title": "Length Units",
       "icon": "📏",
