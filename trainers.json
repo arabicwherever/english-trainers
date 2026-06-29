@@ -642,6 +642,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "good-bad-idea.html",
+      "title": "Good Idea or Bad Idea?",
+      "icon": "💡",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
