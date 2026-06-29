@@ -634,6 +634,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "what-about-you.html",
+      "title": "What About You? — Q&A",
+      "icon": "💬",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
