@@ -658,6 +658,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "want-qa.html",
+      "title": "I Want… — Q&A",
+      "icon": "💭",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
