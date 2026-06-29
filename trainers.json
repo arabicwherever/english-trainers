@@ -650,6 +650,14 @@
       "section": "vocab",
       "type": "plain",
       "editable": true
+    },
+    {
+      "file": "weather-qa.html",
+      "title": "The Weather — Q&A",
+      "icon": "🌦️",
+      "section": "vocab",
+      "type": "plain",
+      "editable": true
     }
   ]
 }
