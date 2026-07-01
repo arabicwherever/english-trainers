@@ -316,6 +316,14 @@
       "editable": true
     },
     {
+      "file": "dates-ordinals.html",
+      "title": "Dates & Ordinal Numbers",
+      "icon": "📆",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "desert-adaptations.html",
       "title": "Desert Animal Adaptations",
       "icon": "🦎",
