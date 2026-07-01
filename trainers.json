@@ -284,6 +284,14 @@
       "editable": true
     },
     {
+      "file": "present-progressive-this-that.html",
+      "title": "Present Progressive · This/That · What Kind",
+      "icon": "🧳",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "telling-time.html",
       "title": "Telling the Time",
       "icon": "🕐",
