@@ -244,6 +244,14 @@
       "editable": true
     },
     {
+      "file": "what-do-you-do.html",
+      "title": "What do you do?",
+      "icon": "💼",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "telling-time.html",
       "title": "Telling the Time",
       "icon": "🕐",
