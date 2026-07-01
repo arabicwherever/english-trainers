@@ -276,6 +276,14 @@
       "editable": true
     },
     {
+      "file": "shopping-ill-take-it.html",
+      "title": "Shopping — I'll take it!",
+      "icon": "💍",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "colors-clothes.html",
       "title": "Colors & Clothes",
       "icon": "👕",
