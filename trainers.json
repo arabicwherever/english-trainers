@@ -260,6 +260,14 @@
       "editable": true
     },
     {
+      "file": "frequency-big-numbers.html",
+      "title": "Frequency & Big Numbers",
+      "icon": "🔁",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "telling-time.html",
       "title": "Telling the Time",
       "icon": "🕐",
