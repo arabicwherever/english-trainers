@@ -236,6 +236,14 @@
       "editable": true
     },
     {
+      "file": "would-like-for.html",
+      "title": "What would you like for…?",
+      "icon": "🍽️",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "telling-time.html",
       "title": "Telling the Time",
       "icon": "🕐",
