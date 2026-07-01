@@ -308,6 +308,14 @@
       "editable": true
     },
     {
+      "file": "days-of-week.html",
+      "title": "Days of the Week",
+      "icon": "📅",
+      "section": "vocab",
+      "type": "write",
+      "editable": true
+    },
+    {
       "file": "desert-adaptations.html",
       "title": "Desert Animal Adaptations",
       "icon": "🦎",
